@@ -3,7 +3,7 @@ package jobs
 import play.api.Play
 import akka.actor.{ActorLogging, Actor}
 import twitter4j._
-import models.Authors
+import models.Author
 
 object TwitterConfig {
 
@@ -38,7 +38,7 @@ class TwitterStreamingActor extends Actor with ActorLogging {
   twitterStream.addListener(simpleStatusListener)
 
   val authorFilter = new FilterQuery()
-  authorFilter.track(Authors.default.map(_.name).toArray)
+  authorFilter.track(Author.defaults.map(_.name).toArray)
 
   twitterStream.filter(authorFilter)
 

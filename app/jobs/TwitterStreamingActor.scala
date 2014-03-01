@@ -25,7 +25,6 @@ object TwitterConfig {
 
 class TwitterStreamingActor extends Actor with ActorLogging {
 
-  var lastQuotation: Option[Quotation] = None
 
   import Quotation.QuotationBSONWriter
   import play.api.libs.concurrent.Execution.Implicits.defaultContext
@@ -36,13 +35,8 @@ class TwitterStreamingActor extends Actor with ActorLogging {
     def onDeletionNotice(statusDeletionNotice: StatusDeletionNotice) = {}
     def onScrubGeo(userId: Long, upToStatusId: Long) = {}
     def onStatus(status: Status) = {
-      log.info(s"Got status ${status.getText}")
       QuotationExtractor(status) map { q =>
         MongoProxy.quotationsCollection.insert(q)
-        q.author match {
-          case UnknownAuthor =>
-          case author => { lastQuotation = Some(q) }
-        }
       }
     }
     def onTrackLimitationNotice(numberOfLimitedStatuses: Int) = {}
@@ -57,10 +51,9 @@ class TwitterStreamingActor extends Actor with ActorLogging {
   twitterStream.filter(authorFilter)
 
   def receive = {
-    case LastQuotation => sender ! lastQuotation
-    case _ => log info ("received unknown message")
+    case message => log info (s"received unknown message $message")
   }
-
 }
 
-case object LastQuotation
+
+

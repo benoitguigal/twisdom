@@ -57,10 +57,10 @@ class TwitterStreamingActor extends Actor with ActorLogging {
   twitterStream.filter(authorFilter)
 
   def receive = {
-    case "lastQuotation" => sender ! lastQuotation
+    case LastQuotation => sender ! lastQuotation
     case _ => log info ("received unknown message")
   }
 
-
-
 }
+
+case object LastQuotation

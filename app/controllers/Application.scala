@@ -2,7 +2,7 @@ package controllers
 
 import play.api.mvc._
 import play.api.libs.concurrent.Akka
-import jobs.TwitterStreamingActor
+import jobs.{LastQuotation, TwitterStreamingActor}
 import akka.actor.Props
 import akka.pattern.ask
 import play.api.Play.current
@@ -26,7 +26,7 @@ object Application extends Controller {
 
   def quotation = Action.async {
     implicit val timeout = Timeout(5, TimeUnit.SECONDS)
-    (streamingActor ? "lastQuotation").mapTo[Option[Quotation]].map { lastQuotation =>
+    (streamingActor ? LastQuotation).mapTo[Option[Quotation]].map { lastQuotation =>
       lastQuotation match {
         case None => Ok("No quotation to be displayed")
         case Some(q) => Ok(toJson(q))

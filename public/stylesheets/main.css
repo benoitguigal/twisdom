@@ -1,0 +1,21 @@
+html, body {
+  font-family: "HelveticaNeue-Light", Helvetica, sans-serif;
+  background-color: #dcdcdc;
+  padding: 100px;
+}
+
+#quotation {
+	color: #515a61;
+	font-size: 300%;
+}
+
+#author {
+	margin-top: 20px;
+	color: #a7abac;
+	font-size: 170%;
+}
+
+#twitterInfo {
+  	margin-top: 60px;
+    color: #a7abac;
+}

@@ -10,7 +10,7 @@ object MongoProxy {
   private[this] val driver = new MongoDriver
   private[this] val connection = driver.connection(List(config.host))
   private[this] val db = connection(config.db)
-  val collection = db[BSONCollection]("tweets")
+  val quotationsCollection = db[BSONCollection]("quotations")
 }
 
 

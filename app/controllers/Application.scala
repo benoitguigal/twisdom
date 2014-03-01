@@ -9,6 +9,10 @@ import play.api.Play.current
 import akka.util.Timeout
 import java.util.concurrent.TimeUnit
 import play.api.libs.concurrent.Execution.Implicits._
+import models.Quotation
+import play.api.libs.json.Json.toJson
+
+
 
 
 object Application extends Controller {
@@ -19,10 +23,14 @@ object Application extends Controller {
     Ok(views.html.index("Your new application is ready."))
   }
 
-  def tweets = Action.async {
+
+  def quotation = Action.async {
     implicit val timeout = Timeout(5, TimeUnit.SECONDS)
-    (streamingActor ? "lastTweet").mapTo[Option[String]].map { lastTweet =>
-      Ok(lastTweet.getOrElse(""))
+    (streamingActor ? "lastQuotation").mapTo[Option[Quotation]].map { lastQuotation =>
+      lastQuotation match {
+        case None => Ok("No quotation to be displayed")
+        case Some(q) => Ok(toJson(q))
+      }
     }
   }
 

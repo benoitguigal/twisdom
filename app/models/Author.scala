@@ -2,11 +2,12 @@ package models
 
 
 
-case class Author(name: String, displayableName: String)
+case class Author(val name: String, val displayableName: String)
+object UnknownAuthor extends Author("unknown", "unknown")
 
 object Author {
 
-  def apply(name: String): Author = Author(name, name)
+  def apply(name: String): Author = new Author(name, name)
 
   def findByName(name: String): Option[Author] = defaults.find(_.name == name)
 

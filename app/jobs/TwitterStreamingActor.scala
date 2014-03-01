@@ -3,7 +3,9 @@ package jobs
 import play.api.Play
 import akka.actor.{ActorLogging, Actor}
 import twitter4j._
-import models.Author
+import models.{Quotation, QuotationExtractor, UnknownAuthor, Author}
+import db.MongoProxy
+
 
 object TwitterConfig {
 
@@ -23,14 +25,26 @@ object TwitterConfig {
 
 class TwitterStreamingActor extends Actor with ActorLogging {
 
-  var lastTweet: Option[Status] = None
+  var lastQuotation: Option[Quotation] = None
+
+  import Quotation.QuotationBSONWriter
+  import play.api.libs.concurrent.Execution.Implicits.defaultContext
 
   def simpleStatusListener = new StatusListener {
     def onStallWarning(warning: StallWarning) = {}
     def onException(ex: Exception) = { ex.printStackTrace() }
     def onDeletionNotice(statusDeletionNotice: StatusDeletionNotice) = {}
     def onScrubGeo(userId: Long, upToStatusId: Long) = {}
-    def onStatus(status: Status) = { lastTweet = Some(status) }
+    def onStatus(status: Status) = {
+      log.info(s"Got status ${status.getText}")
+      QuotationExtractor(status) map { q =>
+        MongoProxy.quotationsCollection.insert(q)
+        q.author match {
+          case UnknownAuthor =>
+          case author => { lastQuotation = Some(q) }
+        }
+      }
+    }
     def onTrackLimitationNotice(numberOfLimitedStatuses: Int) = {}
   }
 
@@ -43,7 +57,10 @@ class TwitterStreamingActor extends Actor with ActorLogging {
   twitterStream.filter(authorFilter)
 
   def receive = {
-    case "lastTweet" => sender ! lastTweet.map(_.getText)
+    case "lastQuotation" => sender ! lastQuotation
     case _ => log info ("received unknown message")
   }
+
+
+
 }

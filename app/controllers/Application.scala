@@ -20,6 +20,10 @@ import models.Quotation.QuotationJSONFormat
 object Application extends Controller with DefaultWriteables {
 
   val streamingActor = Akka.system.actorOf(Props[TwitterStreamingActor], name = "streamingActor")
+  Akka.system.scheduler.schedule(1 hour, 1 hour) {
+    // hack to prevent the db from growing too big during the beta of the product
+    MongoProxy.quotationsCollection.drop()
+  }
 
   def index = Action {
     Ok(views.html.index())

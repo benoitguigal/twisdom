@@ -1,0 +1,105 @@
+Douglas Adams;Douglas Adams
+John Adams;John Adams
+Scott Adams;Scott Adams
+Aeschylus;Aeschylus
+Aesop;Aesop
+Woody Allen;Woody Allen
+Maya Angelou;Maya Angelou
+Marcus Aurelius;Marcus Aurelius Antoninus
+Aristotle;Aristotle
+Jane Austen;Jane Austen
+Francis Bacon;Sir Francis Bacon
+Dave Barry;Dave Barry
+Ambrose Bierce;Ambrose Bierce
+Warren Buffett;Warren Buffett
+Lois McMaster Bujold;Lois McMaster Bujold
+Albert Camus;Albert Camus
+George Carlin;George Carlin
+Johnny Carson;Johnny Carson
+Chesterton;G. K. Chesterton
+Agatha Christie;Agatha Christie
+Winston Churchill;Sir Winston Churchill
+Cicero;Cicero
+Confucius;Confucius
+Calvin Coolidge;Calvin Coolidge
+Cummings;e e cummings
+Ellen DeGeneres;Ellen DeGeneres
+Charles Dickens;Charles Dickens
+Benjamin Disraeli;Benjamin Disraeli
+Thomas Edison;Thomas A. Edison
+Albert Einstein;Albert Einstein
+Eisenhower;Dwight D. Eisenhower
+Emerson;Ralph Waldo Emerson
+Euripides;Euripides
+Richard Feynman;Richard Feynman
+Benjamin Franklin;Benjamin Franklin
+Robert Frost;Robert Frost
+Mahatma Gandhi;Mahatma Gandhi
+Kahlil Gibran;Kahlil Gibran
+Goethe;Johann Wolfgang von Goethe
+Samuel Goldwyn;Samuel Goldwyn
+Matt Groening;Matt Groening
+Mitch Hedberg;Mitch Hedberg
+Oliver Wendell Holmes;Oliver Wendell Holmes
+Homer;Homer
+Horace;Horace
+Victor Hugo;Victor Hugo
+Thomas Jefferson;Thomas Jefferson
+Steve Jobs;Steve Jobs
+Samuel Johnson;Samuel Johnson
+Carl Jung;Carl Jung
+Helen Keller;Helen Keller
+John F. Kennedy;John F. Kennedy
+Martin Luther King;Martin Luther King Jr.
+Lao-tzu;Lao-tzu
+Fran Lebowitz;Fran Lebowitz
+Lewis;C. S. Lewis
+Abraham Lincoln;Abraham Lincoln
+Groucho Marx;Groucho Marx
+W. Somerset Maugham;W. Somerset Maugham
+H. L. Mencken;H. L. Mencken
+Mother Teresa;Mother Teresa
+Nietzsche;Friedrich Nietzsche
+P. J. O'Rourke;P. J. O'Rourke
+Barack Obama;Barack Obama
+Ovid;Ovid
+Dorothy Parker;Dorothy Parker
+Laurence J. Peter;Laurence J. Peter
+Plato;Plato
+Edgar Allan Poe;Edgar Allan Poe
+Alexander Pope;Alexander Pope
+Terry Pratchett;Terry Pratchett
+Publilius Syrus;Publilius Syrus
+Ayn Rand;Ayn Rand
+Ronald Reagan;Ronald Reagan
+La Rochefoucauld;Francois de La Rochefoucauld
+Will Rogers;Will Rogers
+Eleanor Roosevelt;Eleanor Roosevelt
+Franklin D. Roosevelt;Franklin D. Roosevelt
+Theodore Roosevelt;Theodore Roosevelt
+J. K. Rowling;J. K. Rowling
+Rita Rudner;Rita Rudner
+Bertrand Russell;Bertrand Russell
+George Santayana;George Santayana
+Charles M. Schulz;Charles M. Schulz
+Seneca;Seneca
+Dr. Seuss;Dr. Seuss
+Shakespeare;William Shakespeare
+George Bernard Shaw;George Bernard Shaw
+Socrates;Socrates
+Sophocles;Sophocles
+Terence;Terence
+Henry David Thoreau;Henry David Thoreau
+James Thurber;James Thurber
+Tolkien;J. R. R. Tolkien
+Lily Tomlin;Lily Tomlin
+Mark Twain;Mark Twain
+Virgil;Virgil
+Voltaire;Voltaire
+Kurt Vonnegut;Kurt Vonnegut
+Bill Watterson;Bill Watterson
+Walt Whitman;Walt Whitman
+Oscar Wilde;Oscar Wilde
+Oprah Winfrey;Oprah Winfrey
+Steven Wright;Steven Wright
+Malcolm X;Malcolm X

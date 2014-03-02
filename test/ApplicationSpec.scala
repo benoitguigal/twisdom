@@ -21,10 +21,8 @@ class ApplicationSpec extends Specification {
 
     "render the index page" in new WithApplication{
       val home = route(FakeRequest(GET, "/")).get
-
       status(home) must equalTo(OK)
-      contentType(home) must beSome.which(_ == "text/html")
-      contentAsString(home) must contain ("Your new application is ready.")
     }
+
   }
 }

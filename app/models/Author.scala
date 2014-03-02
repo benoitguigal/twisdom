@@ -11,6 +11,9 @@ object Author {
 
   def findByName(name: String): Option[Author] = defaults.find(_.name == name)
 
+  def findInStatus(status: String) =
+    defaults.find(a => status.containsCaseInsensitive(a.name))
+
   def defaults = Seq(
     Author("Douglas Adams"),
     Author("John Adams"),

@@ -1,18 +1,17 @@
 package db
 
-import reactivemongo.api._
 import scala.concurrent.ExecutionContext.Implicits.global
 import reactivemongo.api.collections.default.BSONCollection
 import models.Quotation
 import reactivemongo.bson.BSONDocument
 import scala.concurrent.Future
+import play.modules.reactivemongo.ReactiveMongoPlugin
+import play.api.Play.current
+
 
 object MongoProxy {
 
-  private[this] val config = MongoConfig()
-  private[this] val driver = new MongoDriver
-  private[this] val connection = driver.connection(List(config.host))
-  private[this] val db = connection(config.db)
+  private[this] val db = ReactiveMongoPlugin.db
   val quotationsCollection = db[BSONCollection]("quotations")
 
   def lastQuotation: Future[Option[Quotation]] = quotationsCollection

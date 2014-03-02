@@ -1,5 +1,5 @@
 
-var url = 'ws://' +  window.location.hostname + ':9000/quotation';
+var url = 'ws://' +  window.location.hostname + ':' + window.location.port + '/quotation';
 var ws = new WebSocket(url);
 ws.onmessage = function(event) {
     var data = JSON.parse(event.data)

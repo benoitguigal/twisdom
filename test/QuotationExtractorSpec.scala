@@ -37,6 +37,24 @@ class QuotationExtractorSpec extends Specification with Mockito {
       QuotationExtractor(status) must beNone
     }
 
+    "return None if quotation contains #" in {
+      val status = mock[twitter4j.Status]
+      status.getText returns "This a status containing a \"#relativity lorem ipsum tralalalala\" - Albert Einstein"
+      QuotationExtractor(status) must beNone
+    }
+
+    "return None if quotation contains @" in {
+      val status = mock[twitter4j.Status]
+      status.getText returns "This a status containing a \"@god lorem ipsum lalalalala\" - Albert Einstein"
+      QuotationExtractor(status) must beNone
+    }
+
+    "return None if quotation is toos short" in {
+      val status = mock[twitter4j.Status]
+      status.getText returns "This a status \"very short\" quote- Albert Einstein"
+      QuotationExtractor(status) must beNone
+    }
+
   }
 
 

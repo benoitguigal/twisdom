@@ -8,7 +8,7 @@ object QuotationExtractor {
   def apply(status: twitter4j.Status): Option[Quotation] = {
     val rawText = status.getText
     val textOpt = rawText match {
-      case QuotationRE(q) => Some(q)
+      case QuotationRE(q) if (!q.contains("#") && !q.contains("@") &&  q.length > 20) => Some(q)
       case _ => None
     }
     textOpt map { text =>

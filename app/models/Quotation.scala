@@ -64,7 +64,8 @@ object Quotation {
       "text" -> JsString(q.text),
       "author" -> JsString(q.author.displayableName),
       "user" -> JsString(q.twitterUser),
-      "tweetStatus" -> JsString(q.tweetStatus)))
+      "tweetStatus" -> JsString(q.tweetStatus),
+      "date" -> JsString(q.tweetCreatedAt.toString)))
   }
 
 }

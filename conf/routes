@@ -10,5 +10,5 @@ GET     /assets/*file               controllers.Assets.at(path="/public", file)
 
 GET     /quotation                  controllers.Application.quotation
 
-
+GET     /lastQuotation              controllers.Application.lastQuotation
 

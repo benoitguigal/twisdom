@@ -1,61 +1,60 @@
 import java.util.Date
 import org.specs2.mutable.Specification
-import models.QuotationExtractor
+import models.{Author, QuotationExtractor}
 import org.specs2.mock.Mockito
 
 class QuotationExtractorSpec extends Specification with Mockito {
 
-//
-//  "QuotationExtractor" should {
-//
-//    "parse a Quotation when there is a quotation match" in {
-//
-//      val status = mock[twitter4j.Status]
-//      status.getText returns "\"Try not to be a man of success but a man o value\" - Albert Einstein"
-//      val user = mock[twitter4j.User]
-//      user.getName returns "@BGuigal"
-//      status.getUser returns user
-//      val date = mock[Date]
-//      status.getCreatedAt returns date
-//      val location =  mock[twitter4j.GeoLocation]
-//      status.getGeoLocation returns location
-//
-//      val quotationOpt = QuotationExtractor(status)
-//      quotationOpt must beSome
-//      val quotation = quotationOpt.get
-//      quotation.text must beEqualTo("Try not to be a man of success but a man o value")
-//      quotation.author.name must beEqualTo("Albert Einstein")
-//      quotation.id must beNone
-//      quotation.twitterUser must beEqualTo("@BGuigal")
-//      quotation.geoLocation must beSome(location)
-//      quotation.tweetCreatedAt must beEqualTo(date)
-//    }
-//
-//    "return None when there is no quotation match" in {
-//      val status = mock[twitter4j.Status]
-//      status.getText returns "This a status with no quotation, even if there is the name Albert Einstein"
-//      QuotationExtractor(status) must beNone
-//    }
-//
-//    "return None if quotation contains #" in {
-//      val status = mock[twitter4j.Status]
-//      status.getText returns "This a status containing a \"#relativity lorem ipsum tralalalala\" - Albert Einstein"
-//      QuotationExtractor(status) must beNone
-//    }
-//
-//    "return None if quotation contains @" in {
-//      val status = mock[twitter4j.Status]
-//      status.getText returns "This a status containing a \"@god lorem ipsum lalalalala\" - Albert Einstein"
-//      QuotationExtractor(status) must beNone
-//    }
-//
-//    "return None if quotation is toos short" in {
-//      val status = mock[twitter4j.Status]
-//      status.getText returns "This a status \"very short\" quote- Albert Einstein"
-//      QuotationExtractor(status) must beNone
-//    }
-//
-//  }
+  def mockUser = {
+    val user = mock[twitter4j.User]
+    user.getName returns "Foo Bar"
+    user.getScreenName returns "@foo"
+    user.getMiniProfileImageURL returns "url"
+  }
+
+  def mockStatus(text: String) = {
+    val status = mock[twitter4j.Status]
+    status.getCreatedAt returns new Date(23233)
+    status.getUser returns mockUser
+    status.getText returns text
+    status
+  }
+
+  "QuotationExtractor" should {
+
+    "extract quotation from status" in {
+      val status = mockStatus(
+        "@someone: \"Try not to be a man of success but...\" - Albert Einstein")
+      val q = QuotationExtractor(status)
+      q must beSome
+      q.get.author must beEqualTo(Author("Albert Einstein"))
+      q.get.quotes must beEqualTo("Try not to be a man of success but...")
+    }
+
+    "return None if @ present" in {
+      val status = mockStatus(
+        "@someone: \"@ sdsdsdsqdsqdsqdsqdqsddsddsd\" - Albert Einstein")
+      val q = QuotationExtractor(status)
+      q must beNone
+    }
+
+    "return None if # present" in {
+      pending
+    }
+
+    "return None if / present" in {
+      pending
+    }
+
+    "return None if shorter than 20 char" in {
+      pending
+    }
+
+    "return None if author name present inside the quotes" in {
+      pending
+    }
+
+  }
 
 
 }

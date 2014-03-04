@@ -29,7 +29,7 @@ object Quotation {
     def write(quotation: Quotation) = {
       BSONDocument(
         "_id" -> quotation.id.getOrElse(BSONObjectID.generate),
-        "text" -> BSONString(quotation.text),
+        "text" -> BSONString(quotation.quotes),
         "author" -> BSONString(quotation.author.name),
         "status" -> BSON.write(quotation.status))
     }
@@ -40,7 +40,7 @@ object Quotation {
     def reads(json: JsValue) = throw new Exception("not implemented")
 
     def writes(q: Quotation) = JsObject(Seq(
-      "text" -> JsString(q.text),
+      "text" -> JsString(q.quotes),
       "author" -> JsString(q.author.displayableName),
       "status" -> toJson(q.status)))
   }
@@ -49,7 +49,7 @@ object Quotation {
 
 case class Quotation(
     id: Option[BSONObjectID],
-    text: String,
+    quotes: String,
     author: Author,
     status: SimpleStatus)
 

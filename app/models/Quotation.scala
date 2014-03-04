@@ -1,13 +1,14 @@
 package models
 
-import java.util.Date
 import reactivemongo.bson._
-import twitter4j.GeoLocation
 import play.api.libs.json._
+import play.api.libs.json.Json.toJson
 
 object Quotation {
 
   implicit object QuotationBSONReader extends BSONDocumentReader[Quotation] {
+
+    import SimpleStatus.SimpleStatusBSONReader
 
     def read(document: BSONDocument) = {
       val id = document.getAs[BSONObjectID]("_id")
@@ -16,43 +17,21 @@ object Quotation {
         val name = document.getAs[BSONString]("author").get.value
         Author.findByName(name).get
       }
-      val twitterUser = document.getAs[BSONString]("twitterUser").get.value
-      val tweetStatus = document.getAs[BSONString]("tweetStatus").get.value
-      val tweetCreatedAt = {
-        val millis = document.getAs[BSONDateTime]("tweetCreatedAt").get.value
-        new Date(millis)
-      }
-      val geoLocation = {
-        val latitude = document.getAs[BSONDouble]("latitude")
-        val longitude = document.getAs[BSONDouble]("longitude")
-        (latitude, longitude) match {
-          case (Some(lat), Some(long)) => Some(new GeoLocation(lat.value, long.value))
-          case _ => None
-        }
-      }
-      Quotation(id, text, author, twitterUser, tweetStatus, tweetCreatedAt, geoLocation)
+      val status = BSON.readDocument[SimpleStatus](document.getAs[BSONDocument]("user").get)
+      Quotation(id, text, author, status)
     }
   }
 
   implicit object QuotationBSONWriter extends BSONDocumentWriter[Quotation] {
 
+    import SimpleStatus.SimpleStatusWriter
+
     def write(quotation: Quotation) = {
-      val bson = BSONDocument(
+      BSONDocument(
         "_id" -> quotation.id.getOrElse(BSONObjectID.generate),
         "text" -> BSONString(quotation.text),
         "author" -> BSONString(quotation.author.name),
-        "twitterUser" -> BSONString(quotation.twitterUser),
-        "tweetStatus" -> BSONString(quotation.tweetStatus),
-        "tweetCreatedAt" -> BSONDateTime(quotation.tweetCreatedAt.getTime))
-      val geoLocationOpt = quotation.geoLocation
-      if (geoLocationOpt.isDefined) {
-        val geoLoc = geoLocationOpt.get
-        bson ++
-          BSONDocument(
-            "latitude" -> BSONDouble(geoLoc.getLatitude()),
-            "longitude" -> BSONDouble(geoLoc.getLongitude()))
-      }
-      bson
+        "status" -> BSON.write(quotation.status))
     }
   }
 
@@ -63,11 +42,8 @@ object Quotation {
     def writes(q: Quotation) = JsObject(Seq(
       "text" -> JsString(q.text),
       "author" -> JsString(q.author.displayableName),
-      "user" -> JsString(q.twitterUser),
-      "tweetStatus" -> JsString(q.tweetStatus),
-      "date" -> JsString(q.tweetCreatedAt.toString)))
+      "status" -> toJson(q.status)))
   }
-
 }
 
 
@@ -75,9 +51,6 @@ case class Quotation(
     id: Option[BSONObjectID],
     text: String,
     author: Author,
-    twitterUser: String,
-    tweetStatus: String,
-    tweetCreatedAt: Date,
-    geoLocation: Option[GeoLocation])
+    status: SimpleStatus)
 
 

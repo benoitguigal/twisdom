@@ -12,21 +12,9 @@ object QuotationExtractor {
       case _ => None
     }
     textOpt map { text =>
-      val twitterUser = status.getUser
       val author = Author.defaults.find(a => rawText.containsCaseInsensitive(a.name))
-      val tweetCreatedAt = status.getCreatedAt
-      val location = status.getGeoLocation match {
-        case null => None
-        case geoLoc => Some(geoLoc)
-      }
-      Quotation(
-        None,
-        text,
-        author.getOrElse(UnknownAuthor),
-        twitterUser.getName,
-        rawText,
-        tweetCreatedAt,
-        location)
+      val s = SimpleStatus(status)
+      Quotation(None, text, author.getOrElse(UnknownAuthor), s)
     }
   }
 

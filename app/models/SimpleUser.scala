@@ -1,7 +1,8 @@
 package models
 
-import reactivemongo.bson.{BSONDocumentWriter, BSONString, BSONDocument, BSONDocumentReader}
+import reactivemongo.bson._
 import play.api.libs.json.{JsString, JsObject, JsValue, Format}
+import reactivemongo.bson.BSONString
 
 /**
  * A simplified Twitter user profile
@@ -9,12 +10,13 @@ import play.api.libs.json.{JsString, JsObject, JsValue, Format}
 case class SimpleUser(
     name: String,
     screenName: String,
-    imageUrl: String)
+    imageUrl: String,
+    id: Long)
 
 object SimpleUser {
 
   def apply(user: twitter4j.User): SimpleUser =
-    SimpleUser(user.getName, user.getScreenName, user.getMiniProfileImageURL)
+    SimpleUser(user.getName, user.getScreenName, user.getProfileImageURL, user.getId)
 
   implicit object SimpleUserBSONReader extends BSONDocumentReader[SimpleUser] {
 
@@ -22,7 +24,8 @@ object SimpleUser {
       val name = document.getAs[BSONString]("name").get.value
       val screenName = document.getAs[BSONString]("screenName").get.value
       val imageUrl = document.getAs[BSONString]("imageUrl").get.value
-      SimpleUser(name, screenName, imageUrl)
+      val id = document.getAs[BSONLong]("id").get.value
+      SimpleUser(name, screenName, imageUrl, id)
     }
   }
 
@@ -32,7 +35,8 @@ object SimpleUser {
       BSONDocument(
         "name" -> BSONString(u.name),
         "screenName" -> BSONString(u.screenName),
-        "imageUrl" -> BSONString(u.imageUrl))
+        "imageUrl" -> BSONString(u.imageUrl),
+        "id" -> BSONLong(u.id))
     }
   }
 
@@ -43,6 +47,7 @@ object SimpleUser {
     def writes(u: SimpleUser) = JsObject(Seq(
         "name" -> JsString(u.name),
         "screenName" -> JsString(u.screenName),
-        "imageUrl" -> JsString(u.imageUrl)))
+        "imageUrl" -> JsString(u.imageUrl),
+        "id" -> JsString(u.id.toString)))
   }
 }

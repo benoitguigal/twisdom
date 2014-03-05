@@ -22,7 +22,7 @@ Winston Churchill;Sir Winston Churchill
 Cicero;Cicero
 Confucius;Confucius
 Calvin Coolidge;Calvin Coolidge
-Cummings;e e cummings
+Cummings;E E cummings
 Ellen DeGeneres;Ellen DeGeneres
 Charles Dickens;Charles Dickens
 Benjamin Disraeli;Benjamin Disraeli

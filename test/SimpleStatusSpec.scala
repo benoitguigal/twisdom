@@ -15,7 +15,8 @@ class SimpleStatusSpec extends Specification with Mockito {
       val t4ju = mock[twitter4j.User]
       t4ju.getName returns "Foo Bar"
       t4ju.getScreenName returns "@foo"
-      t4ju.getMiniProfileImageURL returns "url"
+      t4ju.getProfileImageURL returns "url"
+      t4ju.getId returns 1L
       t4jStatus.getUser returns t4ju
       val date = mock[Date]
       t4jStatus.getCreatedAt returns date
@@ -26,10 +27,9 @@ class SimpleStatusSpec extends Specification with Mockito {
     }
 
     "be serialized into json" in {
-      val user = SimpleUser("Foo Bar", "@foo", "url")
+      val user = SimpleUser("Foo Bar", "@foo", "imageurl", 1L)
       val status = SimpleStatus("text", user, new Date(604450800000L))
       val json = toJson(status)
-      println(json)
       json \ "text" must beEqualTo(JsString("text"))
       json \ "createdAt" must beEqualTo(JsString("Sun Feb 26 00:00:00 CET 1989"))
       json \ "user" must beEqualTo(toJson(user))

@@ -1,23 +1,61 @@
 html, body {
   font-family: "HelveticaNeue-Light", Helvetica, sans-serif;
-  background-color: #dcdcdc;
-  padding-left: 100px;
-  padding-right: 100px;
-  padding-top: 50px;
+  background-color: rgb(246,245,241);
+  height:100%;
 }
 
+.wrap {
+  width:80%;
+  height:100%;
+  margin-left:15%;
+  margin-right:5%;
+  display:table;
+}
+
+.quotation-content {
+  padding-right: 5px;
+}
+
+.quotation-content p {
+  margin-bottom:10px;
+}
+
+.container {
+   display: table-cell; 
+   vertical-align: middle;
+}
+
+
 #quotation {
-	color: #515a61;
 	font-size: 300%;
+  font-weight: 400;
 }
 
 #author {
-	margin-top: 20px;
-	color: #a7abac;
-	font-size: 170%;
+	font-size: 150%;
 }
 
-#twitterInfo {
-  	margin-top: 60px;
-    color: #a7abac;
+.circular {
+    width: 50px;
+    height: 50px;
+    border-radius: 25px;
+    -webkit-border-radius: 150px;
+    -moz-border-radius: 150px;
+    background-repeat: no-repeat;
+  }
+
+.user {
+  float: right;
+  width: 80%;
+  text-align:left;
+}
+
+
+#screenName {
+  color: #a2a19f;
+}
+
+#original-tweet {
+  color: #a2a19f;
+  text-decoration: underline;
 }

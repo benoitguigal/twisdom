@@ -19,7 +19,10 @@ function updateView(data) {
     if(data != null) {
         $('#quotation').text("\"" + data.text + "\"");
         $('#author').text(data.author);
-        $('#user').text("Shared by " + data.user);
-        $('#date').text("on" + data.date);
+        $('#profile').css("background", "url(" + data.status.user.imageUrl + ")");
+        $('#name').text(data.status.user.name);
+        $('#screenName').text("@" + data.status.user.screenName);
+        $('#original-tweet').text("View the original tweet");
+        $('#original-tweet').attr("href", "https://twitter.com/intent/user?user_id=" + data.status.user.id);
     }
 }

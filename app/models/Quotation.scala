@@ -26,8 +26,6 @@ object Quotation {
 
   implicit object QuotationBSONWriter extends BSONDocumentWriter[Quotation] {
 
-    import SimpleStatus.SimpleStatusWriter
-
     def write(quotation: Quotation) = {
       BSONDocument(
         "_id" -> quotation.id.getOrElse(BSONObjectID.generate),

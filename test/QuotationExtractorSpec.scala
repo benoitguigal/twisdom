@@ -28,7 +28,7 @@ class QuotationExtractorSpec extends Specification with Mockito {
       val q = QuotationExtractor(status)
       q must beSome
       q.get.author must beEqualTo(Author("Albert Einstein"))
-      q.get.quotes must beEqualTo("Try not to be a man of success but...")
+      q.get.quote must beEqualTo("Try not to be a man of success but...")
     }
 
     "return None if @ present" in {

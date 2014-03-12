@@ -29,7 +29,7 @@ object SimpleUser {
     }
   }
 
-  implicit object SimpleUserWriter extends BSONDocumentWriter[SimpleUser] {
+  implicit object SimpleUserBSONWriter extends BSONDocumentWriter[SimpleUser] {
 
     def write(u: SimpleUser) = {
       BSONDocument(

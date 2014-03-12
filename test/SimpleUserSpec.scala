@@ -3,6 +3,7 @@ import org.specs2.mock.Mockito
 import org.specs2.mutable.Specification
 import play.api.libs.json.Json.toJson
 import play.api.libs.json.JsString
+import reactivemongo.bson.BSON
 
 class SimpleUserSpec extends Specification with Mockito {
 
@@ -28,6 +29,14 @@ class SimpleUserSpec extends Specification with Mockito {
       json \ "screenName" must beEqualTo(JsString("@foo"))
       json \ "imageUrl" must beEqualTo(JsString("imageurl"))
       json \ "id" must beEqualTo(JsString("1"))
+    }
+
+    "be serialized in bson and deserialized" in {
+      val user = SimpleUser("Foo Bar", "@foo", "imageurl", 1L)
+      import SimpleUser.{SimpleUserBSONReader, SimpleUserBSONWriter}
+      val serialized = BSON.write(user)
+      val deserialized = BSON.read(serialized)
+      deserialized must beEqualTo(user)
     }
 
   }

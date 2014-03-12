@@ -1,9 +1,8 @@
-import models.{Author, Quotation}
+import java.util.Date
+import models.{Author, Quotation, SimpleUser, SimpleStatus}
 import org.specs2.mock.Mockito
 import org.specs2.mutable.Specification
-import models.Quotation.QuotationJSONFormat
-import play.api.libs.json.Json.toJson
-import play.api.libs.json._
+import reactivemongo.bson.BSON
 
 class QuotationSpec extends Specification with Mockito{
 
@@ -11,6 +10,19 @@ class QuotationSpec extends Specification with Mockito{
 
     "be serialized into json value" in {
       pending
+    }
+
+    "be serialized in bson and deserialized" in {
+
+      import Quotation.{QuotationBSONReader, QuotationBSONWriter}
+
+      val user = SimpleUser("Foo Bar", "@foo", "imageurl", 1L)
+      val status1 = SimpleStatus("text1", user, new Date(604450800000L))
+      val status2 = SimpleStatus("text2", user, new Date(604450800001L))
+      val quotation = Quotation(None, "quote", Author("Albert Einstein"), Seq(status1, status2))
+      val serialized = BSON.write(quotation)
+      val deserialized = BSON.read(serialized)
+      deserialized must beEqualTo(quotation)
     }
 
   }

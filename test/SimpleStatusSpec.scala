@@ -4,6 +4,7 @@ import org.specs2.mock.Mockito
 import org.specs2.mutable.Specification
 import play.api.libs.json.Json.toJson
 import play.api.libs.json.JsString
+import reactivemongo.bson.BSON
 
 class SimpleStatusSpec extends Specification with Mockito {
 
@@ -33,6 +34,15 @@ class SimpleStatusSpec extends Specification with Mockito {
       json \ "text" must beEqualTo(JsString("text"))
       json \ "createdAt" must beEqualTo(JsString("Sun Feb 26 00:00:00 CET 1989"))
       json \ "user" must beEqualTo(toJson(user))
+    }
+
+    "be serialized in bson and deserialized" in {
+      val user = SimpleUser("Foo Bar", "@foo", "imageurl", 1L)
+      val status = SimpleStatus("text", user, new Date(604450800000L))
+      import SimpleStatus.{SimpleStatusBSONReader, SimpleStatusBSONWriter}
+      val serialized = BSON.write(status)
+      val deserialized = BSON.read(serialized)
+      deserialized must beEqualTo(status)
     }
   }
 

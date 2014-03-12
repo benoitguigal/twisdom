@@ -31,7 +31,7 @@ object SimpleStatus {
     }
   }
 
-  implicit object SimpleStatusWriter extends BSONDocumentWriter[SimpleStatus] {
+  implicit object SimpleStatusBSONWriter extends BSONDocumentWriter[SimpleStatus] {
     def write(s: SimpleStatus) = {
       BSONDocument(
           "text" -> BSONString(s.text),

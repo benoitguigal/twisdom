@@ -12,13 +12,15 @@ object Quotation {
 
     def read(document: BSONDocument) = {
       val id = document.getAs[BSONObjectID]("_id")
-      val text = document.getAs[BSONString]("text").get.value
+      val quote = document.getAs[BSONString]("quote").get.value
       val author = {
         val name = document.getAs[BSONString]("author").get.value
         Author.findByName(name).get
       }
-      val status = BSON.readDocument[SimpleStatus](document.getAs[BSONDocument]("user").get)
-      Quotation(id, text, author, status)
+      val statuses = document.getAs[Seq[BSONDocument]]("statuses").get.map { d =>
+        BSON.readDocument[SimpleStatus](d)
+      }
+      Quotation(id, quote, author, statuses)
     }
   }
 
@@ -29,9 +31,9 @@ object Quotation {
     def write(quotation: Quotation) = {
       BSONDocument(
         "_id" -> quotation.id.getOrElse(BSONObjectID.generate),
-        "text" -> BSONString(quotation.quotes),
+        "quote" -> BSONString(quotation.quote),
         "author" -> BSONString(quotation.author.name),
-        "status" -> BSON.write(quotation.status))
+        "statuses" -> quotation.statuses.map(BSON.writeDocument(_)))
     }
   }
 
@@ -40,17 +42,17 @@ object Quotation {
     def reads(json: JsValue) = throw new Exception("not implemented")
 
     def writes(q: Quotation) = JsObject(Seq(
-      "text" -> JsString(q.quotes),
+      "quote" -> JsString(q.quote),
       "author" -> JsString(q.author.displayableName),
-      "status" -> toJson(q.status)))
+      "status" -> toJson(q.statuses)))
   }
 }
 
 
 case class Quotation(
     id: Option[BSONObjectID],
-    quotes: String,
+    quote: String,
     author: Author,
-    status: SimpleStatus)
+    statuses: Seq[SimpleStatus])
 
 

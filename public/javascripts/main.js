@@ -17,7 +17,7 @@ ws.onmessage = function(event) {
 
 function updateView(data) {
     if(data != null) {
-        $('#quotation').text("\"" + data.text + "\"");
+        $('#quote').text("\"" + data.quote + "\"");
         $('#author').text(data.author);
         $('#profile').css("background", "url(" + data.status.user.imageUrl + ")");
         $('#name').text(data.status.user.name);

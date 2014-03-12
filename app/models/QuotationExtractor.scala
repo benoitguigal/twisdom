@@ -14,7 +14,7 @@ object QuotationExtractor {
 
     status.getText match {
       case QuotationRE(q) if (!q.contains(author.name)) =>
-        Some(Quotation(None, q, author, SimpleStatus(status)))
+        Some(Quotation(None, q, author, Seq(SimpleStatus(status))))
       case _ => None
     }
 

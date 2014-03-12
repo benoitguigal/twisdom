@@ -20,6 +20,7 @@ object MongoProxy {
     .cursor[Quotation]
     .collect[List](1)
     .map(_.headOption)
+
 }
 
 

@@ -31,7 +31,8 @@ object Quotation {
         "_id" -> quotation.id.getOrElse(BSONObjectID.generate),
         "quote" -> BSONString(quotation.quote),
         "author" -> BSONString(quotation.author.name),
-        "statuses" -> quotation.statuses.map(BSON.writeDocument(_)))
+        "statuses" -> quotation.statuses.map(BSON.writeDocument(_)),
+        "statusesCount" -> BSONInteger(quotation.statusesCount))
     }
   }
 
@@ -49,6 +50,9 @@ case class Quotation(
     id: Option[BSONObjectID],
     quote: String,
     author: Author,
-    statuses: Seq[SimpleStatus])
+    statuses: Seq[SimpleStatus]) {
+
+  val statusesCount = statuses.size
+}
 
 

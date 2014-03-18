@@ -14,17 +14,14 @@ import scala.concurrent.duration._
 import play.api.libs.iteratee._
 import play.api.http.DefaultWriteables
 import play.api.libs.concurrent._
-import db.MongoProxy
+import db.QuotationCollectionProxy.default._
 import models.Quotation.QuotationJSONWriter
 
 
 object Application extends Controller with DefaultWriteables {
 
   val streamingActor = Akka.system.actorOf(Props[TwitterStreamingActor], name = "streamingActor")
-  Akka.system.scheduler.schedule(1 hour, 1 hour) {
-    // hack to prevent the db from growing too big during the beta of the product, not enough money :-(
-    MongoProxy().flush()
-  }
+  Akka.system.scheduler.schedule(1 hour, 1 hour) { keep(1000) } // prevent the database from growing too big
 
   def index = Action {
     Ok(views.html.index())

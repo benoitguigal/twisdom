@@ -4,7 +4,7 @@ import play.api.Play
 import akka.actor.{ActorLogging, Actor}
 import twitter4j._
 import models.{Quotation, QuotationExtractor, UnknownAuthor, Author}
-import db.MongoProxy
+import db.QuotationCollectionProxy.default._
 
 
 object TwitterConfig {
@@ -39,7 +39,7 @@ class TwitterStreamingActor extends Actor with ActorLogging {
     def onStatus(status: Status) = {
       QuotationExtractor(status) map { q =>
         if (q.author != UnknownAuthor) { lastQuotation = Some(q) }
-        MongoProxy().updateOrInsert(q)
+        updateOrInsert(q)
       }
     }
     def onTrackLimitationNotice(numberOfLimitedStatuses: Int) = {}

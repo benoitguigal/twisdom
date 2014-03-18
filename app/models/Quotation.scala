@@ -35,14 +35,12 @@ object Quotation {
     }
   }
 
-  implicit object QuotationJSONFormat extends Format[Quotation] {
-
-    def reads(json: JsValue) = throw new Exception("not implemented")
+  implicit object QuotationJSONWriter extends Writes[Quotation] {
 
     def writes(q: Quotation) = JsObject(Seq(
       "quote" -> JsString(q.quote),
       "author" -> JsString(q.author.displayableName),
-      "status" -> toJson(q.statuses)))
+      "status" -> toJson(q.statuses.head)))
   }
 }
 

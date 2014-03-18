@@ -39,7 +39,7 @@ class TwitterStreamingActor extends Actor with ActorLogging {
     def onStatus(status: Status) = {
       QuotationExtractor(status) map { q =>
         if (q.author != UnknownAuthor) { lastQuotation = Some(q) }
-        MongoProxy.quotationsCollection.insert(q)
+        MongoProxy().updateOrInsert(q)
       }
     }
     def onTrackLimitationNotice(numberOfLimitedStatuses: Int) = {}

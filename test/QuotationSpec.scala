@@ -22,7 +22,9 @@ class QuotationSpec extends Specification with Mockito{
       val quotation = Quotation(None, "quote", Author("Albert Einstein"), Seq(status1, status2))
       val serialized = BSON.write(quotation)
       val deserialized = BSON.read(serialized)
-      deserialized must beEqualTo(quotation)
+      deserialized.author must beEqualTo(quotation.author)
+      deserialized.quote must beEqualTo(quotation.quote)
+      deserialized.statuses must beEqualTo(quotation.statuses)
     }
 
   }

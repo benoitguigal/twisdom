@@ -1,7 +1,8 @@
 import java.util.Date
 import org.specs2.mutable.Specification
-import models.{Author, QuotationExtractor}
+import models.Author
 import org.specs2.mock.Mockito
+import jobs.QuotationExtractor
 
 class QuotationExtractorSpec extends Specification with Mockito {
 

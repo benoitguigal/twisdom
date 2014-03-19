@@ -1,7 +1,8 @@
 package controllers
 
 import play.api.mvc._
-import jobs.{LastQuotation, TwitterStreamingActor}
+import jobs.QuotationExtractor
+import jobs.QuotationExtractor.GetMostRecentQuotation
 import akka.actor.Props
 import akka.pattern.ask
 import play.api.Play.current
@@ -18,9 +19,10 @@ import db.QuotationCollectionProxy.default._
 import models.Quotation.QuotationJSONWriter
 
 
+
 object Application extends Controller with DefaultWriteables {
 
-  val streamingActor = Akka.system.actorOf(Props[TwitterStreamingActor], name = "streamingActor")
+  val extractor = Akka.system.actorOf(Props[QuotationExtractor], name = "quotationExtractor")
   Akka.system.scheduler.schedule(1 hour, 1 hour) { keep(1000) } // prevent the database from growing too big
 
   def index = Action {
@@ -36,7 +38,7 @@ object Application extends Controller with DefaultWriteables {
     val out: Enumerator[JsValue] = Enumerator.repeatM {
       val p = scala.concurrent.Promise[Option[Quotation]]()
       Akka.system.scheduler.scheduleOnce(5 seconds) {
-        val lastQuotation = (streamingActor ? LastQuotation).mapTo[Option[Quotation]]
+        val lastQuotation = (extractor ? GetMostRecentQuotation).mapTo[Option[Quotation]]
         p.completeWith(lastQuotation)
       }
       p.future map (toJson(_))
@@ -47,7 +49,7 @@ object Application extends Controller with DefaultWriteables {
 
   def lastQuotation = Action.async {
     implicit val timeout = Timeout(1 seconds)
-    val lastQuotationFut = (streamingActor ? LastQuotation).mapTo[Option[Quotation]]
+    val lastQuotationFut = (extractor ? GetMostRecentQuotation).mapTo[Option[Quotation]]
     lastQuotationFut map {q => Ok(toJson(q)) }
   }
 

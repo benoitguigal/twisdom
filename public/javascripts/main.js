@@ -8,7 +8,7 @@ $.get(
 )
 
 // open a websocket for streaming
-var url = 'ws://' +  window.location.hostname + ':' + window.location.port + '/quotation';
+var url = 'ws://' +  window.location.hostname + ':' + window.location.port + '/stream';
 var ws = new WebSocket(url);
 ws.onmessage = function(event) {
     var data = JSON.parse(event.data)
@@ -25,5 +25,6 @@ function updateView(data) {
         $('#screenName').text("@" + data.status.user.screenName);
         $('#original-tweet').text("View the original tweet");
         $('#original-tweet').attr("href", "https://twitter.com/intent/user?user_id=" + data.status.user.id);
+        $('#tweet-something').text("Tweet a quotation");
     }
 }

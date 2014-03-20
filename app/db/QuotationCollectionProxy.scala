@@ -70,6 +70,20 @@ class QuotationCollectionProxy(db: DB) {
 
   }
 
+  /**
+   * Retrieve the n most trending quotations
+   * @param n
+   * @return
+   */
+  def mostTrending(n: Int): Future[List[Quotation]] = {
+
+    quotationCollection
+      .find(BSONDocument())
+      .sort(BSONDocument("lastShare" -> -1))
+      .cursor[Quotation]
+      .collect[List](n)
+  }
+
 }
 
 

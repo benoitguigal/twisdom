@@ -30,7 +30,17 @@ object Application extends Controller with DefaultWriteables {
     Ok(views.html.index())
   }
 
-  def quotation = WebSocket.using[JsValue] { request =>
+  def share = Action.async {
+    val popular = mostPopular(50)
+    val trending = mostTrending(50)
+    popular flatMap { p =>
+      trending map { t =>
+        Ok(views.html.share(p, t))
+      }
+    }
+  }
+
+  def stream = WebSocket.using[JsValue] { request =>
 
     implicit val timeout = Timeout(1 seconds)
 
@@ -50,13 +60,18 @@ object Application extends Controller with DefaultWriteables {
 
   def lastQuotation = Action.async {
     implicit val timeout = Timeout(1 seconds)
-    val lastQuotationFut = (extractor ? GetMostRecentQuotation).mapTo[Option[Quotation]]
+    val lastQuotationFut = (extractor ? GetMostRecentQuotation).mapTo[Option[(Quotation, SimpleStatus)]]
     lastQuotationFut map {q => Ok(toJson(q)) }
   }
 
   def popular = Action.async {
     implicit val timeout = Timeout(2 seconds)
     mostPopular(50) map (qs => Ok(toJson(qs)))
+  }
+
+  def trending = Action.async {
+    implicit val timeout = Timeout(2 seconds)
+    mostTrending(50) map (qs => Ok(toJson(qs)))
   }
 
 }

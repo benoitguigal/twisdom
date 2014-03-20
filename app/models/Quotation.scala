@@ -23,12 +23,16 @@ object Quotation {
   implicit object QuotationBSONWriter extends BSONDocumentWriter[Quotation] {
 
     def write(quotation: Quotation) = {
+
+      val lastShare = quotation.shares.sortBy(s => - s.getTime).head
+
       BSONDocument(
         "_id" -> quotation.id.getOrElse(BSONObjectID.generate),
         "quote" -> BSONString(quotation.quote),
         "author" -> BSONString(quotation.author.name),
         "shares" -> quotation.shares.map(d => BSONDateTime(d.getTime)),
-        "popularity" -> BSONInteger(quotation.popularity))
+        "popularity" -> BSONInteger(quotation.popularity),
+        "lastShare" -> BSONDateTime(lastShare.getTime))
     }
   }
 

@@ -53,4 +53,9 @@ object Application extends Controller with DefaultWriteables {
     lastQuotationFut map {q => Ok(toJson(q)) }
   }
 
+  def popular = Action.async {
+    implicit val timeout = Timeout(2 seconds)
+    mostPopular(50) map (qs => Ok(toJson(qs)))
+  }
+
 }

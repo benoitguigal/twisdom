@@ -7,7 +7,7 @@ import reactivemongo.bson.{BSONArray, BSONDocument}
 import play.modules.reactivemongo.ReactiveMongoPlugin
 import play.api.Play.current
 import reactivemongo.api.DB
-
+import scala.concurrent.Future
 
 
 object QuotationCollectionProxy {
@@ -18,6 +18,11 @@ class QuotationCollectionProxy(db: DB) {
 
   val quotationCollection = db[BSONCollection]("quotations")
 
+  /**
+   * Check if the quotation is already present. If yes, update with a new field statuses, else insert the quotation
+   * @param quotation
+   * @return
+   */
   def updateOrInsert(quotation: Quotation) = {
     val query = BSONDocument("quote" -> quotation.quote)
     quotationCollection.find(query).one[Quotation] flatMap {
@@ -31,6 +36,10 @@ class QuotationCollectionProxy(db: DB) {
     }
   }
 
+  /**
+   * Empty the collection
+   * @return
+   */
   def flush() = quotationCollection.remove(BSONDocument())
 
   /**
@@ -39,17 +48,26 @@ class QuotationCollectionProxy(db: DB) {
    */
   def keep(n: Int) = {
 
-    val mostPopular = quotationCollection
-      .find(BSONDocument())
-      .sort(BSONDocument("statusesCount" -> -1))
-      .cursor[Quotation]
-      .collect[List](n)   ///TODO use enumerate() here
-      .map(_.map(_.id.get))
-
-    mostPopular flatMap { ids =>
+    mostPopular(n) flatMap { quotations =>
+      val ids = quotations.map(_.id.get)
       val deleteQuery = BSONDocument("_id" -> BSONDocument("$nin" -> BSONArray(ids)))
       quotationCollection.remove(deleteQuery)
     }
+  }
+
+  /**
+   * Retrieve the n most popular quotations
+   * @param n
+   * @return
+   */
+  def mostPopular(n: Int): Future[List[Quotation]] = {
+
+    quotationCollection
+      .find(BSONDocument())
+      .sort(BSONDocument("statusesCount" -> -1))
+      .cursor[Quotation]
+      .collect[List](n)
+
   }
 
 }

@@ -1,8 +1,6 @@
 package models
 
-import reactivemongo.bson._
-import reactivemongo.bson.BSONString
-import play.api.libs.json.{JsString, JsObject, JsValue, Format}
+import play.api.libs.json.{JsString, JsObject, JsValue, Writes}
 import play.api.libs.json.Json.toJson
 
 
@@ -20,27 +18,8 @@ object SimpleStatus {
   def apply(status: twitter4j.Status): SimpleStatus =
     SimpleStatus(status.getText, SimpleUser(status.getUser), status.getCreatedAt)
 
-  implicit object SimpleStatusBSONReader extends BSONDocumentReader[SimpleStatus] {
 
-    import SimpleUser.SimpleUserBSONReader
-    def read(document: BSONDocument) = {
-      val text = document.getAs[BSONString]("text").get.value
-      val user = BSON.readDocument[SimpleUser](document.getAs[BSONDocument]("user").get)
-      val createdAt = document.getAs[BSONDateTime]("createdAt").get.value
-      SimpleStatus(text, user, new java.util.Date(createdAt))
-    }
-  }
-
-  implicit object SimpleStatusBSONWriter extends BSONDocumentWriter[SimpleStatus] {
-    def write(s: SimpleStatus) = {
-      BSONDocument(
-          "text" -> BSONString(s.text),
-          "user" -> BSON.write(s.user),
-          "createdAt" -> BSONDateTime(s.createdAt.getTime))
-    }
-  }
-
-  implicit object SimpleStatusJSONFormat extends Format[SimpleStatus] {
+  implicit object SimpleStatusJSONWriter extends Writes[SimpleStatus] {
 
     def writes(s: SimpleStatus) = JsObject(Seq(
         "text" -> JsString(s.text),

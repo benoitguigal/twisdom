@@ -36,14 +36,6 @@ class SimpleStatusSpec extends Specification with Mockito {
       json \ "user" must beEqualTo(toJson(user))
     }
 
-    "be serialized in bson and deserialized" in {
-      val user = SimpleUser("Foo Bar", "@foo", "imageurl", 1L)
-      val status = SimpleStatus("text", user, new Date(604450800000L))
-      import SimpleStatus.{SimpleStatusBSONReader, SimpleStatusBSONWriter}
-      val serialized = BSON.write(status)
-      val deserialized = BSON.read(serialized)
-      deserialized must beEqualTo(status)
-    }
   }
 
 }

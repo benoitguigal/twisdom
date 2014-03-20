@@ -27,7 +27,7 @@ class QuotationCollectionProxy(db: DB) {
     val query = BSONDocument("quote" -> quotation.quote)
     quotationCollection.find(query).one[Quotation] flatMap {
       case Some(q) => {
-        val update = q.copy(statuses = q.statuses ++ quotation.statuses)
+        val update = q.merge(quotation)
         quotationCollection.update(BSONDocument("_id" -> q.id), update)
       }
       case None => {
@@ -64,7 +64,7 @@ class QuotationCollectionProxy(db: DB) {
 
     quotationCollection
       .find(BSONDocument())
-      .sort(BSONDocument("statusesCount" -> -1))
+      .sort(BSONDocument("popularity" -> -1))
       .cursor[Quotation]
       .collect[List](n)
 

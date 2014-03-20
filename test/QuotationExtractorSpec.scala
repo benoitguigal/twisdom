@@ -1,23 +1,17 @@
 import java.util.Date
 import org.specs2.mutable.Specification
-import models.Author
+import models.{SimpleUser, SimpleStatus, Author}
 import org.specs2.mock.Mockito
 import jobs.QuotationExtractor
 
 class QuotationExtractorSpec extends Specification with Mockito {
 
-  def mockUser = {
-    val user = mock[twitter4j.User]
-    user.getName returns "Foo Bar"
-    user.getScreenName returns "@foo"
-    user.getMiniProfileImageURL returns "url"
-  }
 
   def mockStatus(text: String) = {
-    val status = mock[twitter4j.Status]
-    status.getCreatedAt returns new Date(23233)
-    status.getUser returns mockUser
-    status.getText returns text
+    val status = mock[SimpleStatus]
+    status.createdAt returns new Date(23233)
+    status.user returns mock[SimpleUser]
+    status.text returns text
     status
   }
 

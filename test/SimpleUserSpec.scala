@@ -31,13 +31,5 @@ class SimpleUserSpec extends Specification with Mockito {
       json \ "id" must beEqualTo(JsString("1"))
     }
 
-    "be serialized in bson and deserialized" in {
-      val user = SimpleUser("Foo Bar", "@foo", "imageurl", 1L)
-      import SimpleUser.{SimpleUserBSONReader, SimpleUserBSONWriter}
-      val serialized = BSON.write(user)
-      val deserialized = BSON.read(serialized)
-      deserialized must beEqualTo(user)
-    }
-
   }
 }

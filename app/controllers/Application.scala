@@ -8,7 +8,7 @@ import akka.pattern.ask
 import play.api.Play.current
 import akka.util.Timeout
 import play.api.libs.concurrent.Execution.Implicits._
-import models.Quotation
+import models.{SimpleStatus, Quotation}
 import play.api.libs.json.Json.toJson
 import play.api.libs.json.JsValue
 import scala.concurrent.duration._
@@ -16,7 +16,8 @@ import play.api.libs.iteratee._
 import play.api.http.DefaultWriteables
 import play.api.libs.concurrent._
 import db.QuotationCollectionProxy.default._
-import models.Quotation.QuotationJSONWriter
+import models.QuotationAndStatusJSONWriter
+
 
 
 
@@ -36,10 +37,10 @@ object Application extends Controller with DefaultWriteables {
     val in = Iteratee.getChunks[JsValue]
 
     val out: Enumerator[JsValue] = Enumerator.repeatM {
-      val p = scala.concurrent.Promise[Option[Quotation]]()
+      val p = scala.concurrent.Promise[Option[(Quotation, SimpleStatus)]]()
       Akka.system.scheduler.scheduleOnce(5 seconds) {
-        val lastQuotation = (extractor ? GetMostRecentQuotation).mapTo[Option[Quotation]]
-        p.completeWith(lastQuotation)
+        val mostRecentQuotation = (extractor ? GetMostRecentQuotation).mapTo[Option[(Quotation, SimpleStatus)]]
+        p.completeWith(mostRecentQuotation)
       }
       p.future map (toJson(_))
     }

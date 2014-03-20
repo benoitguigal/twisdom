@@ -27,9 +27,7 @@ class QuotationCollectionProxyInteSpec extends Specification {
     "update of insert a quotation" in {
       //make sure the collection is empty
       Await.result(proxy.flush(), Duration(2, SECONDS))
-      val user = SimpleUser("Foo Bar", "@foo", "imageurl", 1L)
-      val status = SimpleStatus("text1", user, new Date(604450800000L))
-      val quotation = Quotation(None, "quote", Author("Albert Einstein"), Seq(status))
+      val quotation = Quotation(None, "quote", Author("Albert Einstein"), Seq(new Date(604450800000L)))
 
       // insert because quotation is not present
       Await.result(proxy.updateOrInsert(quotation), Duration(2, SECONDS))
@@ -37,7 +35,7 @@ class QuotationCollectionProxyInteSpec extends Specification {
           proxy.quotationCollection.find(BSONDocument()).cursor[Quotation].collect[List](15),
           Duration(2, SECONDS))
       quotations must haveSize(1)
-      quotations.head.statuses must have size (1)
+      quotations.head.popularity must beEqualTo(1)
 
       // update because quotation is already present
       Await.result(proxy.updateOrInsert(quotation), Duration(2, SECONDS))
@@ -45,17 +43,16 @@ class QuotationCollectionProxyInteSpec extends Specification {
         proxy.quotationCollection.find(BSONDocument()).cursor[Quotation].collect[List](15),
         Duration(2, SECONDS))
       quotations2 must haveSize(1)
-      quotations2.head.statuses must have size (2)
+      quotations2.head.popularity must beEqualTo(2)
 
     }
 
     "keep n most popular quotations" in {
       //make sure the collection is empty
       Await.result(proxy.flush(), Duration(2, SECONDS))
-      val user = SimpleUser("Foo Bar", "@foo", "imageurl", 1L)
-      val status = SimpleStatus("text1", user, new Date(604450800000L))
-      val quotation = Quotation(None, "quote", Author("Albert Einstein"), Seq(status))
-      val quotations = (1 to 100) map (i => quotation.copy(statuses = (1 to i).map(_ => status)))
+      val date = new Date(604450800000L)
+      val quotation = Quotation(None, "quote", Author("Albert Einstein"), Seq(date))
+      val quotations = (1 to 100) map (i => quotation.copy(shares = (1 to i).map(_ => date)))
       val enumerator = Enumerator.enumerate(quotations)
       Await.result(proxy.quotationCollection.bulkInsert(enumerator), Duration(30, SECONDS))
       Await.result(proxy.keep(50),Duration(5, SECONDS))
@@ -63,7 +60,7 @@ class QuotationCollectionProxyInteSpec extends Specification {
         proxy.quotationCollection.find(BSONDocument()).cursor[Quotation].collect[List](100),
         Duration(2, SECONDS))
       find must haveSize(50)
-      val minPopularity = find.map(_.statusesCount).min
+      val minPopularity = find.map(_.popularity).min
       minPopularity must beEqualTo(51)
     }
 

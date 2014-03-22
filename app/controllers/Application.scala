@@ -26,19 +26,6 @@ object Application extends Controller with DefaultWriteables {
   val extractor = Akka.system.actorOf(Props[QuotationExtractor], name = "quotationExtractor")
   Akka.system.scheduler.schedule(1 hour, 1 hour) { keep(1000) } // prevent the database from growing too big
 
-  def index = Action {
-    Ok(views.html.index())
-  }
-
-  def share = Action.async {
-    val popular = mostPopular(50)
-    val trending = mostTrending(50)
-    popular flatMap { p =>
-      trending map { t =>
-        Ok(views.html.share(p, t))
-      }
-    }
-  }
 
   def stream = WebSocket.using[JsValue] { request =>
 

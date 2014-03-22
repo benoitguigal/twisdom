@@ -1,5 +1,5 @@
-html, body {
-  font-family: "HelveticaNeue-Light", Helvetica, sans-serif;
+html, body, .view {
+  font-family: 'Buenard', 'HelveticaNeue-Light', Helvetica, sans-serif;
   background-color: rgb(246,245,241);
   height:100%;
 }

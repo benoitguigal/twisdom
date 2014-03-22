@@ -2,15 +2,8 @@
 # This file defines all application routes (Higher priority routes first)
 # ~~~~
 
-# Home page
-GET     /                           controllers.Application.index
 
-# Share
-
-GET /share                          controllers.Application.share
-
-# Map static resources from the /public folder to the /assets URL path
-GET     /assets/*file               controllers.Assets.at(path="/public", file)
+# API
 
 GET     /stream                     controllers.Application.stream
 
@@ -19,4 +12,9 @@ GET     /lastQuotation              controllers.Application.lastQuotation
 GET     /popular                    controllers.Application.popular
 
 GET     /trending                   controllers.Application.trending
+
+# Home page
+GET     /                           controllers.Assets.at(path="/public", file="index.html")
+
+GET     /*file                      controllers.Assets.at(path="/public", file)
 

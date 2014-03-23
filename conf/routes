@@ -7,8 +7,6 @@
 
 GET     /stream                     controllers.Application.stream
 
-GET     /lastQuotation              controllers.Application.lastQuotation
-
 GET     /popular                    controllers.Application.popular
 
 GET     /trending                   controllers.Application.trending

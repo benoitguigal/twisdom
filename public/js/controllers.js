@@ -6,8 +6,8 @@ var app = angular.module('myApp.controllers', []);
 
 app.controller('StreamController', function($scope) {
 
-  	$scope.quote = "The horizon leans forward, offering you place to put new steps of change"
-  	$scope.author = "Maya Angelou"
+  	$scope.quote = ""
+  	$scope.author = ""
   	$scope.profile = ""
   	$scope.name = ""
   	$scope.screenName = ""

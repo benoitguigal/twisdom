@@ -4,6 +4,7 @@ import akka.actor.{ActorLogging, Props, Actor}
 import twitter4j.Status
 import models.{SimpleStatus, UnknownAuthor, Author, Quotation}
 import models.CaseInsensitiveString
+import play.api.libs.iteratee.{Enumerator, Concurrent}
 
 
 object QuotationExtractor {
@@ -24,7 +25,9 @@ object QuotationExtractor {
     }
   }
 
-  case object GetMostRecentQuotation
+  case object Connect
+  case class Connected(enumerator: Enumerator[Option[(Quotation, SimpleStatus)]])
+  case object Refresh
 }
 
 
@@ -37,6 +40,8 @@ class QuotationExtractor extends Actor with ActorLogging {
 
   var mostRecent: Option[(Quotation, SimpleStatus)] = None
 
+  val (enumerator, channel) = Concurrent.broadcast[Option[(Quotation, SimpleStatus)]]
+
   def receive: Receive = {
     case status: Status =>
       val simpleStatus = SimpleStatus(status)
@@ -46,7 +51,8 @@ class QuotationExtractor extends Actor with ActorLogging {
           backuper ! quotation
         case _ =>
       }
-    case GetMostRecentQuotation => sender ! mostRecent
+    case Connect => sender ! Connected(enumerator)
+    case Refresh => channel.push(mostRecent)
   }
 
 }

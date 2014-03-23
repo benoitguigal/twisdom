@@ -2,13 +2,12 @@ package controllers
 
 import play.api.mvc._
 import jobs.QuotationExtractor
-import jobs.QuotationExtractor.GetMostRecentQuotation
+import jobs.QuotationExtractor.{Connected, Connect, Refresh}
 import akka.actor.Props
 import akka.pattern.ask
 import play.api.Play.current
 import akka.util.Timeout
 import play.api.libs.concurrent.Execution.Implicits._
-import models.{SimpleStatus, Quotation}
 import play.api.libs.json.Json.toJson
 import play.api.libs.json.JsValue
 import scala.concurrent.duration._
@@ -19,36 +18,22 @@ import db.QuotationCollectionProxy.default._
 import models.QuotationAndStatusJSONWriter
 
 
-
-
 object Application extends Controller with DefaultWriteables {
 
-  val extractor = Akka.system.actorOf(Props[QuotationExtractor], name = "quotationExtractor")
   Akka.system.scheduler.schedule(1 hour, 1 hour) { keep(1000) } // prevent the database from growing too big
 
+  val extractor = Akka.system.actorOf(Props[QuotationExtractor], name = "quotationExtractor")
+  Akka.system.scheduler.schedule(0 seconds, 5 seconds) { extractor ! Refresh }
 
-  def stream = WebSocket.using[JsValue] { request =>
+
+  def stream = WebSocket.async[JsValue] { request =>
 
     implicit val timeout = Timeout(1 seconds)
 
-    val in = Iteratee.getChunks[JsValue]
-
-    val out: Enumerator[JsValue] = Enumerator.repeatM {
-      val p = scala.concurrent.Promise[Option[(Quotation, SimpleStatus)]]()
-      Akka.system.scheduler.scheduleOnce(5 seconds) {
-        val mostRecentQuotation = (extractor ? GetMostRecentQuotation).mapTo[Option[(Quotation, SimpleStatus)]]
-        p.completeWith(mostRecentQuotation)
-      }
-      p.future map (toJson(_))
+    (extractor ? Connect) map {
+      case Connected(enumerator) =>
+        (Iteratee.ignore[JsValue], enumerator map (toJson(_)))
     }
-
-    (in, out)
-  }
-
-  def lastQuotation = Action.async {
-    implicit val timeout = Timeout(1 seconds)
-    val lastQuotationFut = (extractor ? GetMostRecentQuotation).mapTo[Option[(Quotation, SimpleStatus)]]
-    lastQuotationFut map {q => Ok(toJson(q)) }
   }
 
   def popular = Action.async {

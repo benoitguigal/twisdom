@@ -2,7 +2,7 @@ package controllers
 
 import play.api.mvc._
 import jobs.QuotationExtractor
-import jobs.QuotationExtractor.{Connected, Connect, Refresh}
+import jobs.QuotationExtractor.{GetMostRecentQuotation, Connected, Connect, Refresh}
 import akka.actor.Props
 import akka.pattern.ask
 import play.api.Play.current
@@ -15,7 +15,7 @@ import play.api.libs.iteratee._
 import play.api.http.DefaultWriteables
 import play.api.libs.concurrent._
 import db.QuotationCollectionProxy.default._
-import models.QuotationAndStatusJSONWriter
+import models.{SimpleStatus, Quotation, QuotationAndStatusJSONWriter}
 
 
 object Application extends Controller with DefaultWriteables {
@@ -25,6 +25,16 @@ object Application extends Controller with DefaultWriteables {
   val extractor = Akka.system.actorOf(Props[QuotationExtractor], name = "quotationExtractor")
   Akka.system.scheduler.schedule(0 seconds, 5 seconds) { extractor ! Refresh }
 
+  def index = Action.async { implicit request =>
+
+    implicit val timeout = Timeout(1 seconds)
+    (extractor ? GetMostRecentQuotation).mapTo[Option[(Quotation, SimpleStatus)]] map {
+      case Some((q, s)) =>
+        val streamView = views.html.stream(q, s)
+        Ok(views.html.main(streamView))
+      case _ => NoContent
+    }
+  }
 
   def stream = WebSocket.async[JsValue] { request =>
 

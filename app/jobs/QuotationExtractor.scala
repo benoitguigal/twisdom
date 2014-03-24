@@ -28,6 +28,7 @@ object QuotationExtractor {
   case object Connect
   case class Connected(enumerator: Enumerator[Option[(Quotation, SimpleStatus)]])
   case object Refresh
+  case object GetMostRecentQuotation
 }
 
 
@@ -53,6 +54,7 @@ class QuotationExtractor extends Actor with ActorLogging {
       }
     case Connect => sender ! Connected(enumerator)
     case Refresh => channel.push(mostRecent)
+    case GetMostRecentQuotation => sender ! mostRecent
   }
 
 }

@@ -8,29 +8,31 @@
 <div class="wrap">
     <div class="container">
         <div class="units-row">
-            <div class="unit-70 quotation-content" >
-                <p id="quote">@quotation.quote</p>
-                <p id="author">@quotation.author.displayableName</p>
+            <div class="unit-70 quotation-content">
+                <p class="quote">@quotation.quote</p>
+                <p class="author">@quotation.author.displayableName</p>
             </div>
             <div class="unit-30 user-content">
                 <div class="units-row">
                     <div class="unit-20">
-                        <div id="profile" class="circular" style=""></div>
+                        <div class="profile circular" style="background: url(@(status.user.imageUrl));"></div>
                     </div>
                     <div class="unit-80 user">
-                        <span id="name">@status.user.name</span>
-                        <span id="screenName">@status.user.screenName</span>
-                        <p><a id="original-tweet" href=@("https://twitter.com/intent/user?user_id="+status.user.id) target="_blank">View the original tweet</a></p>
+                        <span class="name">@status.user.name</span>
+                        <span class="screenName">@status.user.screenName</span><br>
+                        @status.createdAt <br>
+                        <a class="original-tweet" href=@("https://twitter.com/intent/user?user_id="+status.user.id) target="_blank">View the original tweet</a>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-
 </div>
 
 <script type="text/javascript">
     var ws = new WebSocket("@routes.Application.stream.webSocketURL()");
+
+    var lastQuote = "@(quotation.quote)" ;
 
     ws.onmessage = function(event) {
         var data = JSON.parse(event.data)
@@ -39,15 +41,30 @@
 
     function updateView(data) {
 
-        if(data != null) {
-            $('#quote').text(data.quote);
-            $('#author').text(data.author);
-            $('#profile').css("background", "url(" + data.status.user.imageUrl + ")");
-            $('#name').text(data.status.user.name);
-            $('#screenName').text("@@" + data.status.user.screenName);
-            $('#original-tweet').text("View the original tweet");
-            $('#original-tweet').attr("href", "https://twitter.com/intent/user?user_id=" + data.status.user.id);
-            $('#tweet-something').text("Tweet a quotation");
+        if(data != null && data.quote != lastQuote) {
+            var tweetUrl = "https://twitter.com/intent/user?user_id=" + data.status.user.id;
+            $('.container').append("\
+                <div class='units-row'>\
+                    <div class='unit-70 quotation-content'>\
+                        <p class='quote'>" + data.quote + "</p>\
+                        <p class='author'>" + data.author + "</p>\
+                    </div>\
+                    <div class='unit-30 user-content'>\
+                        <div class='units-row'>\
+                            <div class='unit-20'>\
+                                <div class='profile circular' style='background: url(" + data.status.user.imageUrl + ");'></div>\
+                            </div>\
+                            <div class='unit-80 user'>\
+                                <span class='name'>" + data.status.user.name + "</span>\
+                                <span class='screenName'>" + data.status.user.screenName+ "</span><br>\
+                                " +data.status.createdAt+ "<br>\
+                                <a class='original-tweet' href="+tweetUrl+" target='_blank'>View the original tweet</a>\
+                            </div>\
+                        </div>\
+                    </div>\
+                </div>\
+            ");
+            lastQuote = data.quote;
         }
     }
 

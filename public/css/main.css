@@ -5,11 +5,15 @@ html, body {
 }
 
 .wrap {
-  width:80%;
+  width:75%;
   height:100%;
-  margin-left:15%;
-  margin-right:5%;
+  margin-left:10%;
+  margin-right:15%;
   display:table;
+}
+
+.container {
+ padding-top:30px;
 }
 
 .quotation-content {
@@ -26,13 +30,13 @@ html, body {
 }
 
 
-#quote {
-  font-size: 300%;
+.quote {
+  font-size: 200%;
   font-weight: 400;
 }
 
-#author {
-	font-size: 150%;
+.author {
+	font-size: 100%;
 }
 
 .circular {
@@ -51,16 +55,16 @@ html, body {
 }
 
 
-#screenName {
+.screenName {
   color: #a2a19f;
 }
 
-#original-tweet {
+.original-tweet {
   color: #a2a19f;
   text-decoration: underline;
 }
 
-#tweet-something {
+.tweet-something {
     color: #a2a19f;
     font-size: 150%;
 

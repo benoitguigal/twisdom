@@ -8,18 +8,18 @@
 <div class="wrap">
     <div class="container">
         <div class="units-row">
-            <div class="unit-70 quotation-content">
+            <div class="unit-65 quotation-content">
                 <p class="quote">@quotation.quote</p>
                 <p class="author">@quotation.author.displayableName</p>
             </div>
-            <div class="unit-30 user-content">
+            <div class="unit-35 user-content">
                 <div class="units-row">
                     <div class="unit-20">
                         <div class="profile circular" style="background: url(@(status.user.imageUrl));"></div>
                     </div>
                     <div class="unit-80 user">
                         <span class="name">@status.user.name</span>
-                        <span class="screenName">@status.user.screenName</span><br>
+                        <span class="screenName">@@@status.user.screenName</span><br>
                         @status.createdAt <br>
                         <a class="original-tweet" href=@("https://twitter.com/intent/user?user_id="+status.user.id) target="_blank">View the original tweet</a>
                     </div>
@@ -45,18 +45,18 @@
             var tweetUrl = "https://twitter.com/intent/user?user_id=" + data.status.user.id;
             $('.container').append("\
                 <div class='units-row'>\
-                    <div class='unit-70 quotation-content'>\
+                    <div class='unit-65 quotation-content'>\
                         <p class='quote'>" + data.quote + "</p>\
                         <p class='author'>" + data.author + "</p>\
                     </div>\
-                    <div class='unit-30 user-content'>\
+                    <div class='unit-35 user-content'>\
                         <div class='units-row'>\
                             <div class='unit-20'>\
                                 <div class='profile circular' style='background: url(" + data.status.user.imageUrl + ");'></div>\
                             </div>\
                             <div class='unit-80 user'>\
                                 <span class='name'>" + data.status.user.name + "</span>\
-                                <span class='screenName'>" + data.status.user.screenName+ "</span><br>\
+                                <span class='screenName'>@@" + data.status.user.screenName+ "</span><br>\
                                 " +data.status.createdAt+ "<br>\
                                 <a class='original-tweet' href="+tweetUrl+" target='_blank'>View the original tweet</a>\
                             </div>\

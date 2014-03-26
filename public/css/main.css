@@ -5,10 +5,10 @@ html, body {
 }
 
 .wrap {
-  width:75%;
+  width:80%;
   height:100%;
-  margin-left:10%;
-  margin-right:15%;
+  margin-left:15%;
+  margin-right:5%;
   display:table;
 }
 
@@ -17,7 +17,7 @@ html, body {
 }
 
 .quotation-content {
-  padding-right: 5px;
+  padding-right: 15px;
 }
 
 .quotation-content p {
@@ -36,13 +36,13 @@ html, body {
 }
 
 .author {
-	font-size: 100%;
+	font-size: 110%;
 }
 
 .circular {
-    width: 50px;
-    height: 50px;
-    border-radius: 25px;
+    width: 30px;
+    height: 30px;
+    border-radius: 15px;
     -webkit-border-radius: 150px;
     -moz-border-radius: 150px;
     background-repeat: no-repeat;

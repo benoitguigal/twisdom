@@ -19,10 +19,5 @@ class ApplicationSpec extends Specification {
       route(FakeRequest(GET, "/boum")) must beNone
     }
 
-    "render the index page" in new WithApplication{
-      val home = route(FakeRequest(GET, "/")).get
-      status(home) must equalTo(OK)
-    }
-
   }
 }

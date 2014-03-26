@@ -7,65 +7,58 @@
 </style>
 <div class="wrap">
     <div class="container">
-        <div class="units-row">
-            <div class="unit-65 quotation-content">
-                <p class="quote">@quotation.quote</p>
-                <p class="author">@quotation.author.displayableName</p>
-            </div>
-            <div class="unit-35 user-content">
-                <div class="units-row">
-                    <div class="unit-20">
-                        <div class="profile circular" style="background: url(@(status.user.imageUrl));"></div>
-                    </div>
-                    <div class="unit-80 user">
-                        <span class="name">@status.user.name</span>
-                        <span class="screenName">@@@status.user.screenName</span><br>
-                        @status.createdAt <br>
-                        <a class="original-tweet" href=@("https://twitter.com/intent/user?user_id="+status.user.id) target="_blank">View the original tweet</a>
-                    </div>
-                </div>
-            </div>
-        </div>
     </div>
 </div>
 
 <script type="text/javascript">
-    var ws = new WebSocket("@routes.Application.stream.webSocketURL()");
 
-    var lastQuote = "@(quotation.quote)" ;
+    var lastQuote = "";
+
+    updateView("@quotation.quote", "@quotation.author.displayableName", "@status.user.imageUrl", "@status.user.name", "@@@status.user.screenName", "@status.createdAt", "@status.user.id")
+
+    var ws = new WebSocket("@routes.Application.stream.webSocketURL()");
 
     ws.onmessage = function(event) {
         var data = JSON.parse(event.data)
-        updateView(data)
+        if(data != null && data.quote != lastQuote) {
+            updateView(data.quote, data.author, data.status.user.imageUrl, data.status.user.name, data.status.user.screenName, data.status.createdAt, data.status.user.id);
+        }
     };
 
-    function updateView(data) {
+    function updateView(quote, author, imageUrl, name, screenName, createdAt, userId) {
 
-        if(data != null && data.quote != lastQuote) {
-            var tweetUrl = "https://twitter.com/intent/user?user_id=" + data.status.user.id;
+            var tweetUrl = "https://twitter.com/intent/user?user_id=" + userId;
+            var intentUrl = "https://twitter.com/intent/tweet?text=" + encode("\"" + quote + "\"" + " " + author + " http://thewisdomoftwitter.com")
             $('.container').append("\
                 <div class='units-row'>\
                     <div class='unit-65 quotation-content'>\
-                        <p class='quote'>" + data.quote + "</p>\
-                        <p class='author'>" + data.author + "</p>\
+                        <div class='quote'>" + quote + "</div>\
+                        <div class='author'>" + author + "</div>\
+                        <div><a href=" + intentUrl + "><i class='icon-twitter-1'></i></a></div>\
                     </div>\
                     <div class='unit-35 user-content'>\
                         <div class='units-row'>\
                             <div class='unit-20'>\
-                                <div class='profile circular' style='background: url(" + data.status.user.imageUrl + ");'></div>\
+                                <div class='profile circular' style='background: url(" + imageUrl + ");'></div>\
                             </div>\
                             <div class='unit-80 user'>\
-                                <span class='name'>" + data.status.user.name + "</span>\
-                                <span class='screenName'>@@" + data.status.user.screenName+ "</span><br>\
-                                " +data.status.createdAt+ "<br>\
+                                <span class='name'>" + name + "</span>\
+                                <span class='screenName'>@@" + screenName+ "</span><br>\
+                                " +createdAt+ "<br>\
                                 <a class='original-tweet' href="+tweetUrl+" target='_blank'>View the original tweet</a>\
                             </div>\
                         </div>\
                     </div>\
                 </div>\
             ");
-            lastQuote = data.quote;
-        }
+            lastQuote = quote;
     }
 
+    function encode(s) {
+        return encodeURIComponent(s);
+    }
+
+
+
 </script>
+<script type="text/javascript" src="//platform.twitter.com/widgets.js"></script>

@@ -4,26 +4,67 @@ html, body {
   height:100%;
 }
 
-.wrap {
+
+
+/*styling open close button*/
+.button i{
+ color: #000;
+ display: inline;
+ position: absolute;
+ left: 50px;
+ top: 50px;
+ font-size: 230%;
+}
+
+
+/*overlay*/
+.overlay{
+ display: none;
+ position: fixed;
+ top: 0;
+ height: 100%;
+ width: 100%;
+ background: rgba(0, 0, 0, 0.94);
+}
+
+.overlay-wrap{
+ color: #fff;
+ max-width: 1100px;
+ margin: 80px;
+ display:table;
+ padding-top: 60px;
+ font-weight:200;
+ font-size: 200%;
+ letter-spacing:3px;
+}
+
+.overlay-wrap a {
+ text-decoration: none;
+ color: #d2ba9e;
+}
+
+.overlay a:hover {
+ color: #fff;
+ text-decoration: underline;
+}
+
+
+@media screen and (max-width: 48em) {
+ .button{
+ top: 0;
+}
+}
+
+.container {
   width:80%;
   height:100%;
   margin-left:15%;
   margin-right:5%;
-  display:table;
-}
-
-.container {
- padding-top:30px;
+  padding-top:100px;
 }
 
 .quotation-content {
   padding-right: 15px;
-}
-
-
-.container {
-   display: table-cell; 
-   vertical-align: middle;
 }
 
 

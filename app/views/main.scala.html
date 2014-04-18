@@ -27,6 +27,52 @@
 
 </head>
 <body>
+<header>
+    <nav>
+        <div class="button">
+            <a href="#">
+                <i class="btn-open icon-menu"></i>
+                <i class="btn-close icon-cancel"></i>
+            </a>
+        </div>
+    </nav>
+</header>
+
+<div class="overlay">
+    <div class="overlay-wrap">
+        <p>A Twitter-sourced quotations stream built on top of <a href="https://dev.twitter.com/docs/api/streaming">Twitter API</a> and the <a href="http://www.playframework.com/">Play Framework</a></p>
+        <p>Concept and code by <a href="http://benoitguigal.me">@@BGuigal</a></p>
+        <p>Fork this project on <a href="https://github.com/benoitguigal/twisdom">Github</a></p>
+    </div>
+</div>
     @content
+<script>
+$(document).ready(function(){
+     $('.btn-close').fadeOut(200);
+     var open = false;
+     $('.button a').on('click',function(){
+     if(open == false){
+     $('.overlay, .btn-close').fadeIn(200);
+     $('nav ul li, .btn-open').fadeOut(200);
+     $('body').css("overflow", "hidden")
+     open = true;
+     } else {
+     $('.overlay, .btn-close').fadeOut(200)
+     $('nav ul li, .btn-open').fadeIn(200);
+     $('body').css("overflow", "auto")
+     open = false;
+     }
+     });
+     $('.overlay').on('click', function(){
+     $('.overlay, .btn-close').fadeOut(200);
+     $('nav ul li, .btn-open').fadeIn(200);
+     $('body').css("overflow", "auto")
+     open = false;
+     });
+     $('.overlay-wrap').on('click', function(){
+     return false;
+     });
+ })
+</script>
 </body>
 </html>

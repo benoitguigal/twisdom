@@ -1,9 +1,6 @@
-Tweet Poetry 
+Twisdom.li
 =====================================
 
-Tweet poetry is an application that extracts famous quotations shared on Twitter 
-Quotations are streamed to a Play web app 
-Quotations are also stored in a MongoDB database to perform analytics and to grow a Twitter-sourced quotation database 
-We love contributions 
+Built on top of Scala Play 2.2.1 + twitter4j + akka.io + reactivemongo
 
 

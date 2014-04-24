@@ -4,7 +4,9 @@ html, body {
   height:100%;
 }
 
-
+a:hover {
+ color: #000
+}
 
 /*styling open close button*/
 .button i{
@@ -40,7 +42,7 @@ html, body {
 
 .overlay-wrap a {
  text-decoration: none;
- color: #d2ba9e;
+ color: #998100;
 }
 
 .overlay a:hover {
@@ -60,7 +62,7 @@ html, body {
   height:100%;
   margin-left:15%;
   margin-right:5%;
-  padding-top:100px;
+  padding-top:50px;
 }
 
 .quotation-content {
@@ -80,9 +82,9 @@ html, body {
       margin-bottom: 10px;
 }
 
-.icon-twitter-1 {
+.icon-retweet {
     font-size:150%;
-    color: #a2a19f;
+    color: #998100;
 }
 
 .circular {
@@ -101,7 +103,7 @@ html, body {
 }
 
 
-.screenName {
+.screenName, .date {
   color: #a2a19f;
 }
 

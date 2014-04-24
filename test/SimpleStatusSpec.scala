@@ -4,7 +4,6 @@ import org.specs2.mock.Mockito
 import org.specs2.mutable.Specification
 import play.api.libs.json.Json.toJson
 import play.api.libs.json.JsString
-import reactivemongo.bson.BSON
 
 class SimpleStatusSpec extends Specification with Mockito {
 
@@ -32,8 +31,14 @@ class SimpleStatusSpec extends Specification with Mockito {
       val status = SimpleStatus("text", user, new Date(604450800000L))
       val json = toJson(status)
       json \ "text" must beEqualTo(JsString("text"))
-      json \ "createdAt" must beEqualTo(JsString("Sun Feb 26 00:00:00 CET 1989"))
+      json \ "createdAt" must beEqualTo(JsString("1989-02-25 23:00:00 UTC"))
       json \ "user" must beEqualTo(toJson(user))
+    }
+
+    "print createdAt" in {
+      val user = SimpleUser("Foo Bar", "@foo", "imageurl", 1L)
+      val status = SimpleStatus("text", user, new Date(604450800000L))
+      status.createdAtStr must beEqualTo("1989-02-25 23:00:00 UTC")
     }
 
   }

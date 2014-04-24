@@ -14,7 +14,7 @@
 
     var lastQuote = "";
 
-    updateView("@quotation.quote", "@quotation.author.displayableName", "@status.user.imageUrl", "@status.user.name", "@status.user.screenName", "@status.createdAt", "@status.user.id")
+    updateView("@quotation.quote", "@quotation.author.displayableName", "@status.user.imageUrl", "@status.user.name", "@status.user.screenName", "@status.createdAtStr", "@status.user.id")
 
     var ws = new WebSocket("@routes.Application.stream.webSocketURL()");
 
@@ -28,13 +28,14 @@
     function updateView(quote, author, imageUrl, name, screenName, createdAt, userId) {
 
             var tweetUrl = "https://twitter.com/intent/user?user_id=" + userId;
-            var intentUrl = "https://twitter.com/intent/tweet?text=" + encode("\"" + quote + "\"" + " " + author + " http://thewisdomoftwitter.com")
+            var intentUrl = "https://twitter.com/intent/tweet?text=" + encode("\"" + quote + "\"" + " " + author + " via http://twisdom.li")
+            var displayableDate = new Date(createdAt).toLocaleString()
             $('.container').append("\
                 <div class='units-row'>\
                     <div class='unit-65 quotation-content'>\
                         <div class='quote'>" + quote + "</div>\
                         <div class='author'>" + author + "</div>\
-                        <div><a href=" + intentUrl + "><i class='icon-twitter-1'></i></a></div>\
+                        <div><a href=" + intentUrl + "><i class='icon-retweet'></i></a></div>\
                     </div>\
                     <div class='unit-35 user-content'>\
                         <div class='units-row'>\
@@ -44,8 +45,8 @@
                             <div class='unit-80 user'>\
                                 <span class='name'>" + name + "</span>\
                                 <span class='screenName'>@@" + screenName+ "</span><br>\
-                                " +createdAt+ "<br>\
-                                <a class='original-tweet' href="+tweetUrl+" target='_blank'>View the original tweet</a>\
+                                <span class='date'>" + displayableDate + "</span><br>\
+                                <a class='original-tweet' href="+tweetUrl+" target='_blank'>Check the original tweet</a>\
                             </div>\
                         </div>\
                     </div>\

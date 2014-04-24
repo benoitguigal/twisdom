@@ -61,7 +61,6 @@ H. L. Mencken;H. L. Mencken
 Mother Teresa;Mother Teresa
 Nietzsche;Friedrich Nietzsche
 P. J. O'Rourke;P. J. O'Rourke
-Barack Obama;Barack Obama
 Ovid;Ovid
 Dorothy Parker;Dorothy Parker
 Laurence J. Peter;Laurence J. Peter
@@ -103,3 +102,46 @@ Oscar Wilde;Oscar Wilde
 Oprah Winfrey;Oprah Winfrey
 Steven Wright;Steven Wright
 Malcolm X;Malcolm X
+Asimov;Isaac Asimov
+Baldwin;James A. Baldwin
+Balzac;Honore de Balzac
+Simone de Beauvoir;Simone de Beauvoir
+Napoleon Bonaparte;Napoleon Bonaparte
+Bukowski;Charles Bukowski
+John Burroughs;John Burroughs
+Chaplin;Charlie Chaplin
+Pierre Teilhard de Chardin;Pierre Teilhard de Chardin
+Paulo Coelho;Paulo Coelho
+Charles Darwin;Charles Darwin
+Rene Descartes;Rene Descartes
+Dostoevsky;Fyodor Dostoevsky
+Arthur Conan Doyle;Arthur Conan Doyle
+T. S. Eliot;T. S. Eliot
+Epicurus;Epicurus
+Che Guevara;Che Guevara
+Alexander Hamilton;Alexander Hamilton
+Stephen Hawking;Stephen Hawking
+Humphrey;Hubert H. Humphrey
+Aldous Huxley;Aldous Huxley
+Carl Jung;Carl Jung
+Kafka;Franz Kafka
+John Keats;John Keats
+H. P. Lovecraft;H. P. Lovecraft
+Nelson Mandela;Nelson Mandela
+Karl Marx;Karl Marx
+Henry Miller;Henry Miller
+Moliere;Moliere
+Isaac Newton;Isaac Newton
+George Orwell;George Orwell
+Blaise Pascal;Blaise Pascal
+Marcel Proust;Marcel Proust
+Alexander Pope;Alexander Pope
+John Ruskin;John Ruskin
+Saint-Exupery;Antoine de Saint-Exupery
+Jean-Paul Sartre;Jean-Paul Sartre
+Schopenhauer;Arthur Schopenhauer
+Walter Scott;Walter Scott
+Steinbeck;John Steinbeck
+Stendhal;Stendhal
+Jonathan Swift;Jonathan Swift
+Virgil;Virgil

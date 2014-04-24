@@ -10,14 +10,21 @@ a:hover {
 
 /*styling open close button*/
 .button i{
- color: #000;
  display: inline;
  position: absolute;
  left: 50px;
  top: 50px;
  font-size: 230%;
+ z-index: 1000;
 }
 
+.icon-menu {
+ color: #000;
+}
+
+.icon-cancel {
+ color: #fff;
+}
 
 /*overlay*/
 .overlay{

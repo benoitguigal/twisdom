@@ -14,7 +14,7 @@
     <link href='http://fonts.googleapis.com/css?family=Buenard:400' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" href="@routes.Assets.at("css/fontello.css")">
     <link rel="stylesheet" href="@routes.Assets.at("css/animation.css")">
-    <script src="@routes.Assets.at("js/jquery-1.9.0.min.js")"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
     <script>
       (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
       (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
@@ -44,6 +44,7 @@
         <p>A Twitter-sourced quotations stream built on top of <a href="https://dev.twitter.com/docs/api/streaming">Twitter API</a> and the <a href="http://www.playframework.com/">Play Framework</a></p>
         <p>Concept and code by <a href="http://benoitguigal.me">@@BGuigal</a></p>
         <p>Fork this project on <a href="https://github.com/benoitguigal/twisdom">Github</a></p>
+        <p class="spread">Spread the word <i class="icon-twitter"></i><p>
     </div>
 </div>
     @content
@@ -52,26 +53,17 @@ $(document).ready(function(){
      $('.btn-close').fadeOut(200);
      var open = false;
      $('.button a').on('click',function(){
-     if(open == false){
-     $('.overlay, .btn-close').fadeIn(200);
-     $('nav ul li, .btn-open').fadeOut(200);
-     $('body').css("overflow", "hidden")
-     open = true;
-     } else {
-     $('.overlay, .btn-close').fadeOut(200)
-     $('nav ul li, .btn-open').fadeIn(200);
-     $('body').css("overflow", "auto")
-     open = false;
-     }
-     });
-     $('.overlay').on('click', function(){
-     $('.overlay, .btn-close').fadeOut(200);
-     $('nav ul li, .btn-open').fadeIn(200);
-     $('body').css("overflow", "auto")
-     open = false;
-     });
-     $('.overlay-wrap').on('click', function(){
-     return false;
+        if(open == false){
+             $('.overlay, .btn-close').fadeIn(200);
+             $('nav ul li, .btn-open').fadeOut(200);
+             $('body').css("overflow", "hidden")
+             open = true;
+         } else {
+             $('.overlay, .btn-close').fadeOut(200)
+             $('nav ul li, .btn-open').fadeIn(200);
+             $('body').css("overflow", "auto")
+             open = false;
+        }
      });
  })
 </script>

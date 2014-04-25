@@ -27,18 +27,18 @@
             var intentUrl = "https://twitter.com/intent/tweet?text=" + encode("\"" + quote + "\"" + " " + author + " via http://twisdom.li")
             var displayableDate = new Date(createdAt).toLocaleString()
             $('.container').append("\
-                <div class='units-row'>\
-                    <div class='unit-65 quotation-content'>\
+                <div class='row content-row'>\
+                    <div class='col-sm-8 quotation-content'>\
                         <div class='quote'>" + quote + "</div>\
                         <div class='author'>" + author + "</div>\
                         <div><a href=" + intentUrl + "><i class='icon-retweet'></i></a></div>\
                     </div>\
-                    <div class='unit-35 user-content'>\
-                        <div class='units-row'>\
-                            <div class='unit-20'>\
-                                <div class='profile circular' style='background: url(" + imageUrl + ");'></div>\
+                    <div class='col-sm-4 hidden-xs'>\
+                        <div class='row'>\
+                            <div class='col-sm-0 col-md-2 hidden-sm'>\
+                                <div class='circular' style='background: url(" + imageUrl + ");'></div>\
                             </div>\
-                            <div class='unit-80 user'>\
+                            <div class='col-sm-12 col-md-10 user'>\
                                 <span class='name'>" + name + "</span>\
                                 <span class='screenName'>@@" + screenName+ "</span><br>\
                                 <span class='date'>" + displayableDate + "</span><br>\

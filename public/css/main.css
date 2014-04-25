@@ -15,7 +15,7 @@ a:hover {
  left: 50px;
  top: 50px;
  font-size: 230%;
- z-index: 1000;
+ z-index: 1001;
 }
 
 .icon-menu {
@@ -41,6 +41,7 @@ a:hover {
  background: rgba(0, 0, 0, 0.94);
  display:table;
  text-align:center;
+ z-index:1000;
 }
 
 .overlay-wrapper {
@@ -79,6 +80,10 @@ a:hover {
   padding-top:80px;
 }
 
+.content-row {
+   margin-bottom: 20px;
+}
+
 .quotation-content {
   padding-right: 15px;
 }
@@ -93,7 +98,7 @@ a:hover {
 
 .author {
     font-size: 110%;
-      margin-bottom: 10px;
+    margin-bottom: 10px;
 }
 
 .icon-retweet {
@@ -112,7 +117,6 @@ a:hover {
 
 .user {
   float: right;
-  width: 80%;
   text-align:left;
 }
 

@@ -11,7 +11,7 @@ class QuotationAndStatusJSONWriterSpec extends Specification {
 
     "serialize a (Quotation, SimpleStatus) into json" in {
 
-      val quotation = Quotation(None, "quote", Author("author"), Seq.empty[java.util.Date])
+      val quotation = Quotation("quote", Author("author"))
       val user = SimpleUser("Foo Bar", "@foo", "imageurl", 1L)
       val status = SimpleStatus("text", user, new Date(604450800000L))
       val serialized = prettyPrint(toJson((quotation, status)))
@@ -19,7 +19,6 @@ class QuotationAndStatusJSONWriterSpec extends Specification {
       """{
         |  "quote" : "quote",
         |  "author" : "author",
-        |  "popularity" : 0,
         |  "status" : {
         |    "text" : "text",
         |    "user" : {
@@ -28,7 +27,7 @@ class QuotationAndStatusJSONWriterSpec extends Specification {
         |      "imageUrl" : "imageurl",
         |      "id" : "1"
         |    },
-        |    "createdAt" : "Sun Feb 26 00:00:00 CET 1989"
+        |    "createdAt" : "1989-02-25 23:00:00 UTC"
         |  }
         |}""".stripMargin
       )

@@ -2,7 +2,7 @@ import java.util.Date
 import org.specs2.mutable.Specification
 import models.{SimpleUser, SimpleStatus, Author}
 import org.specs2.mock.Mockito
-import jobs.QuotationExtractor
+import models.QuotationExtractor
 
 class QuotationExtractorSpec extends Specification with Mockito {
 
@@ -15,12 +15,14 @@ class QuotationExtractorSpec extends Specification with Mockito {
     status
   }
 
+  val extractor = new QuotationExtractor
+
   "QuotationExtractor" should {
 
     "extract quotation from status" in {
       val status = mockStatus(
         "@someone: \"Try not to be a man of success but...\" - Albert Einstein")
-      val q = QuotationExtractor(status)
+      val q = extractor(status)
       q must beSome
       q.get.author must beEqualTo(Author("Albert Einstein"))
       q.get.quote must beEqualTo("Try not to be a man of success but...")
@@ -29,7 +31,7 @@ class QuotationExtractorSpec extends Specification with Mockito {
     "return None if @ present" in {
       val status = mockStatus(
         "@someone: \"@ sdsdsdsqdsqdsqdsqdqsddsddsd\" - Albert Einstein")
-      val q = QuotationExtractor(status)
+      val q = extractor(status)
       q must beNone
     }
 

@@ -14,9 +14,7 @@ GET     /assets/*file               controllers.Assets.at(path="/public", file)
 
 GET     /stream                     controllers.Application.stream
 
-GET     /popular                    controllers.Application.popular
 
-GET     /trending                   controllers.Application.trending
 
 
 

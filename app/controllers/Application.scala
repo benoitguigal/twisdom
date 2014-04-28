@@ -1,8 +1,7 @@
 package controllers
 
 import play.api.mvc._
-import jobs.QuotationExtractor
-import jobs.QuotationExtractor.{GetMostRecentQuotation, Connected, Connect, Refresh}
+import jobs.QuotationExtractorActor
 import akka.actor.Props
 import akka.pattern.ask
 import play.api.Play.current
@@ -14,15 +13,15 @@ import scala.concurrent.duration._
 import play.api.libs.iteratee._
 import play.api.http.DefaultWriteables
 import play.api.libs.concurrent._
-import db.QuotationCollectionProxy.default._
 import models.{SimpleStatus, Quotation, QuotationAndStatusJSONWriter}
+import jobs.QuotationExtractorActor.{Connected, Connect, GetMostRecentQuotation, Refresh}
+
 
 
 object Application extends Controller with DefaultWriteables {
 
-  Akka.system.scheduler.schedule(1 hour, 1 hour) { keep(1000) } // prevent the database from growing too big
 
-  val extractor = Akka.system.actorOf(Props[QuotationExtractor], name = "quotationExtractor")
+  val extractor = Akka.system.actorOf(Props[QuotationExtractorActor], name = "quotationExtractor")
   Akka.system.scheduler.schedule(0 seconds, 5 seconds) { extractor ! Refresh }
 
   def index = Action.async { implicit request =>
@@ -44,16 +43,6 @@ object Application extends Controller with DefaultWriteables {
       case Connected(enumerator) =>
         (Iteratee.ignore[JsValue], enumerator map (toJson(_)))
     }
-  }
-
-  def popular = Action.async {
-    implicit val timeout = Timeout(2 seconds)
-    mostPopular(50) map (qs => Ok(toJson(qs)))
-  }
-
-  def trending = Action.async {
-    implicit val timeout = Timeout(2 seconds)
-    mostTrending(50) map (qs => Ok(toJson(qs)))
   }
 
 }

@@ -5,6 +5,7 @@ import twitter4j.Status
 import models.{SimpleStatus, UnknownAuthor, Author, Quotation}
 import models.CaseInsensitiveString
 import play.api.libs.iteratee.{Enumerator, Concurrent}
+import akka.dispatch.{BoundedMessageQueueSemantics, RequiresMessageQueue}
 
 
 object QuotationExtractor {
@@ -34,7 +35,7 @@ object QuotationExtractor {
 
 import QuotationExtractor._
 
-class QuotationExtractor extends Actor with ActorLogging {
+class QuotationExtractor extends Actor with ActorLogging with RequiresMessageQueue[BoundedMessageQueueSemantics] {
 
   context.actorOf(Props[TwitterStreamListener])
   val backuper = context.actorOf(Props[QuotationBackuper])

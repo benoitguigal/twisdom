@@ -4,10 +4,10 @@ import akka.actor.Actor
 import play.api.Play
 import twitter4j._
 import models.Author
+import akka.dispatch.{BoundedMessageQueueSemantics, RequiresMessageQueue}
 
 
-
-class TwitterStreamListener extends Actor {
+class TwitterStreamListener extends Actor with RequiresMessageQueue[BoundedMessageQueueSemantics] {
 
   def receive = {
     case status: Status => context.parent ! status

@@ -33,6 +33,10 @@ class TwitterStreamListener extends Actor with RequiresMessageQueue[BoundedMessa
     def onTrackLimitationNotice(numberOfLimitedStatuses: Int) = {}
   }
 
+  override def postStop() = {
+    twitterStream.shutdown()
+    super.postStop()
+  }
 
   object TwitterConfig {
 

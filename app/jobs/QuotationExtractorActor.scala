@@ -40,8 +40,8 @@ class QuotationExtractorActor
       val simpleStatus = SimpleStatus(status)
       extractor(simpleStatus) match {
         case Some(quotation) if (quotation.author != UnknownAuthor) =>
-          mostRecent = Some(quotation, simpleStatus)
           store.insert(quotation)
+          if (quotation.lang == "en") { mostRecent = Some(quotation, simpleStatus) }
         case _ =>
       }
     case Connect => sender ! Connected(enumerator)

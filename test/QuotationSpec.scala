@@ -17,11 +17,12 @@ class QuotationSpec extends Specification with Mockito {
 
       import Quotation.{QuotationBSONReader, QuotationBSONWriter}
 
-      val quotation = Quotation("quote", Author("Albert Einstein"))
+      val quotation = Quotation("quote", Author("Albert Einstein"), "en")
       val serialized = BSON.write(quotation)
       val deserialized = BSON.read(serialized)
       deserialized.author must beEqualTo(quotation.author)
       deserialized.quote must beEqualTo(quotation.quote)
+      deserialized.lang must beEqualTo(quotation.lang)
     }
 
   }

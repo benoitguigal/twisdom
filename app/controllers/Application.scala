@@ -20,7 +20,6 @@ import jobs.QuotationExtractorActor.{Connected, Connect, GetMostRecentQuotation,
 
 object Application extends Controller with DefaultWriteables {
 
-
   val extractor = Akka.system.actorOf(Props[QuotationExtractorActor], name = "quotationExtractor")
   Akka.system.scheduler.schedule(0 seconds, 5 seconds) { extractor ! Refresh }
 

@@ -1,8 +1,7 @@
 import java.util.Date
 import org.specs2.mutable.Specification
-import models.{SimpleUser, SimpleStatus, Author}
+import models._
 import org.specs2.mock.Mockito
-import models.QuotationExtractor
 
 class QuotationExtractorSpec extends Specification with Mockito {
 
@@ -15,7 +14,15 @@ class QuotationExtractorSpec extends Specification with Mockito {
     status
   }
 
-  val extractor = new QuotationExtractor
+  def mockLanguageDetector = {
+    val detector = mock[LanguageDetector]
+    detector.apply(anyString) returns "en"
+    detector
+  }
+
+  val extractor = new QuotationExtractor {
+    override protected lazy val languageDetector = mockLanguageDetector
+  }
 
   "QuotationExtractor" should {
 
@@ -26,6 +33,7 @@ class QuotationExtractorSpec extends Specification with Mockito {
       q must beSome
       q.get.author must beEqualTo(Author("Albert Einstein"))
       q.get.quote must beEqualTo("Try not to be a man of success but...")
+      q.get.lang must beEqualTo("en")
     }
 
     "return None if @ present" in {

@@ -14,7 +14,8 @@ object Quotation {
         val name = document.getAs[BSONString]("author").get.value
         Author.findByName(name).get
       }
-      Quotation(quote, author)
+      val lang = document.getAs[BSONString]("lang").get.value
+      Quotation(quote, author, lang)
     }
   }
 
@@ -24,6 +25,7 @@ object Quotation {
       BSONDocument(
         "quote" -> BSONString(quotation.quote),
         "author" -> BSONString(quotation.author.name),
+        "lang" -> BSONString(quotation.lang),
         "timestamp" -> BSONDateTime(new Date().getTime))
     }
   }
@@ -37,6 +39,6 @@ object Quotation {
 }
 
 
-case class Quotation(quote: String, author: Author)
+case class Quotation(quote: String, author: Author, lang: String)
 
 

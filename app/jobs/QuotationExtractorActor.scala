@@ -5,7 +5,7 @@ import twitter4j.Status
 import models.{QuotationExtractor, SimpleStatus, UnknownAuthor, Quotation}
 import play.api.libs.iteratee.{Enumerator, Concurrent}
 import akka.dispatch.{BoundedMessageQueueSemantics, RequiresMessageQueue}
-import db.{QuotationStore, Mongo}
+import db.MongoStore
 
 
 object QuotationExtractorActor {
@@ -19,7 +19,6 @@ import QuotationExtractorActor._
 
 class QuotationExtractorActor
   extends Actor
-  with Mongo
   with RequiresMessageQueue[BoundedMessageQueueSemantics] {
 
   val twitterStream = new TwitterStream
@@ -27,7 +26,7 @@ class QuotationExtractorActor
 
   val extractor = new QuotationExtractor
 
-  val store = new QuotationStore
+  val store = new MongoStore
 
   var mostRecent: Option[(Quotation, SimpleStatus)] = None
 
@@ -40,7 +39,8 @@ class QuotationExtractorActor
       val simpleStatus = SimpleStatus(status)
       extractor(simpleStatus) match {
         case Some(quotation) if (quotation.author != UnknownAuthor) =>
-          store.insert(quotation)
+          store.insertQuotation(quotation)
+          store.insertUser(simpleStatus.user)
           if (quotation.lang == "en") { mostRecent = Some(quotation, simpleStatus) }
         case _ =>
       }

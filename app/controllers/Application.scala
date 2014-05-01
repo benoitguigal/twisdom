@@ -1,7 +1,7 @@
 package controllers
 
 import play.api.mvc._
-import jobs.QuotationExtractorActor
+import jobs.{QuotationStatsActor, QuotationExtractorActor}
 import akka.actor.Props
 import akka.pattern.ask
 import play.api.Play.current
@@ -22,6 +22,8 @@ object Application extends Controller with DefaultWriteables {
 
   val extractor = Akka.system.actorOf(Props[QuotationExtractorActor], name = "quotationExtractor")
   Akka.system.scheduler.schedule(0 seconds, 5 seconds) { extractor ! Refresh }
+
+  Akka.system.actorOf(Props[QuotationStatsActor], name = "quotationStats")
 
   def index = Action.async { implicit request =>
 

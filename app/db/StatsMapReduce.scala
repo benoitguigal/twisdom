@@ -11,18 +11,16 @@ object StatsMapReduce {
 
 trait StatsMapReduce extends Mongo {
 
-  val outputCollection = "stats_quotations"
-
   def run(lastUpdate: Long)(implicit exec: ExecutionContext) = db.command(RawCommand(mapReduceCommand(lastUpdate)))
 
-  def mapReduceCommand(lastUpdate: Long) = BSONDocument(
-    "mapreduce" -> BSONString("raw_quotations"),
+  private def mapReduceCommand(lastUpdate: Long) = BSONDocument(
+    "mapreduce" -> BSONString(rawQuotationsColl.name),
     "map" -> BSONString(mapFunction),
     "reduce" -> BSONString(reduceFunction),
-    "out" -> BSONDocument("reduce" -> BSONString(outputCollection)),
+    "out" -> BSONDocument("reduce" -> BSONString(statsQuotationsColl.name)),
     "query" -> BSONDocument("timestamp" -> BSONDocument("$gte" -> BSONDateTime(lastUpdate))))
 
-  def mapFunction =
+  private def mapFunction =
     """function() {
       |	var key = {
       |				quote: this.quote,
@@ -34,7 +32,7 @@ trait StatsMapReduce extends Mongo {
       |};""".stripMargin
 
 
-  def reduceFunction =
+  private def reduceFunction =
     """function(key, values) {
       |	reducedObject = 0
       |	values.forEach(function(value){
@@ -42,6 +40,5 @@ trait StatsMapReduce extends Mongo {
       |	});
       |	return reducedObject;
       |};""".stripMargin
-
 
 }

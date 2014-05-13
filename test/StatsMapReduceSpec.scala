@@ -22,11 +22,11 @@ class StatsMapReduceSpec extends Specification {
   "A StatsMapReduceJob" should {
 
     "run a mapreduce job" in {
-      pending
       val BSONDocument(ret) = Await.result(statsMapReduce.run(0L), Duration(10, SECONDS))
-      ret collect {
-        case Success(("counts", BSONDocument(vs))) => println(vs)
+      val job = ret.toList.collect {
+        case Success(vt) => vt
       }
+      job must haveSize(4)
     }
 
   }

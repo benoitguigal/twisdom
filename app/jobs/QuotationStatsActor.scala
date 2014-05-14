@@ -17,15 +17,13 @@ import QuotationStatsActor._
 
 class QuotationStatsActor extends Actor with Mongo {
 
-  context.system.scheduler.schedule(12 hours, 12 hours, self, IncrementalMapReduce)
-
   var lastUpdate = new DateTime()
 
   val mapReduce = StatsMapReduce()
 
   implicit val exec = context.dispatcher
 
-  override def receive = {
+  def receive = {
     case IncrementalMapReduce =>
       mapReduce.run(lastUpdate.getMillis).onSuccess { case _ => context.self ! MapReduceDone }
     case MapReduceDone =>

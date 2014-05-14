@@ -15,7 +15,7 @@ import play.api.http.DefaultWriteables
 import play.api.libs.concurrent._
 import models.{SimpleStatus, Quotation, QuotationAndStatusJSONWriter}
 import jobs.QuotationExtractorActor.{Connected, Connect, GetMostRecentQuotation, Refresh}
-
+import jobs.QuotationStatsActor.IncrementalMapReduce
 
 
 object Application extends Controller with DefaultWriteables {
@@ -23,7 +23,9 @@ object Application extends Controller with DefaultWriteables {
   val extractor = Akka.system.actorOf(Props[QuotationExtractorActor], name = "quotationExtractor")
   Akka.system.scheduler.schedule(0 seconds, 5 seconds) { extractor ! Refresh }
 
-  Akka.system.actorOf(Props[QuotationStatsActor], name = "quotationStats")
+  val stats = Akka.system.actorOf(Props[QuotationStatsActor], name = "quotationStats")
+  Akka.system.scheduler.schedule(12 hours, 12 hours, stats, IncrementalMapReduce)
+
 
   def index = Action.async { implicit request =>
 

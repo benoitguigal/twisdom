@@ -27,7 +27,7 @@ object Application extends Controller with DefaultWriteables {
 
   def index = Action.async { implicit request =>
 
-    implicit val timeout = Timeout(1 seconds)
+    implicit val timeout = Timeout(10 seconds)
     (extractor ? GetMostRecentQuotation).mapTo[Option[(Quotation, SimpleStatus)]] map {
       case Some((q, s)) =>
         val streamView = views.html.stream(q, s)
@@ -38,7 +38,7 @@ object Application extends Controller with DefaultWriteables {
 
   def stream = WebSocket.async[JsValue] { request =>
 
-    implicit val timeout = Timeout(1 seconds)
+    implicit val timeout = Timeout(10 seconds)
 
     (extractor ? Connect) map {
       case Connected(enumerator) =>

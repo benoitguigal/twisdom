@@ -1,0 +1,12 @@
+mongo:
+ image: mongo
+ ports:
+  - "27017:27017"
+  - "28017:28017" 
+app:
+ build: ./app
+ ports:
+  - "9000:9000"
+ links:
+  - mongo
+

@@ -33,6 +33,9 @@ ADD ./ /root/twisdom
 # Define working directory 
 WORKDIR /root/twisdom
 
-RUN sbt compile
+RUN sbt clean clean-files compile
 
-CMD ["sbt", "start -Dhttp.port=80"]
+# Expose port
+EXPOSE 9000
+
+CMD ["sbt" ,"start -Dhttp.port=9000 -Dpidfile.path=/dev/null"]

@@ -1,0 +1,21 @@
+
+
+upstream play_app {
+  server app:9000;
+}
+
+server {
+  listen       80;
+  server_name www.twisdom.org twisdom.org;
+  location / {
+    proxy_pass http://play_app;
+    proxy_set_header Host $host;
+  }
+
+  location /stream {
+    proxy_pass http://play_app;
+    proxy_set_header Host $host;
+    proxy_set_header Upgrade $http_upgrade;
+    proxy_set_header Connection "upgrade";
+  }
+}

@@ -9,4 +9,10 @@ app:
   - "9000:9000"
  links:
   - mongo
+nginx:
+ build: ./nginx
+ ports:
+  - "80:80"
+ links:
+  - app
 
